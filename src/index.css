@@ -1,0 +1,507 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Swiper Styles */
+.swiper-pagination-custom .swiper-pagination-bullet {
+  @apply w-3 h-3 bg-white/50 rounded-full cursor-pointer transition-all duration-300;
+}
+
+.swiper-pagination-custom .swiper-pagination-bullet-active {
+  @apply bg-gold scale-125;
+}
+
+.swiper-pagination-custom .swiper-pagination-bullet:hover {
+  @apply bg-white/80 scale-110;
+}
+
+/* Swiper Navigation Button Styles */
+.swiper-button-prev-custom:focus,
+.swiper-button-next-custom:focus {
+  @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-transparent;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .swiper-pagination-custom .swiper-pagination-bullet {
+    @apply w-2.5 h-2.5;
+  }
+
+  .swiper-button-prev-custom,
+  .swiper-button-next-custom {
+    @apply w-10 h-10;
+  }
+}
+
+/* Ensure proper z-index for carousel */
+.home-carousel {
+  @apply relative z-0;
+}
+
+/* Smooth transitions for slide content */
+.slide-content {
+  @apply transform transition-all duration-1000 ease-out;
+}
+
+/* Loading state for images */
+.carousel-image {
+  @apply transition-opacity duration-500;
+}
+
+.carousel-image[data-loaded="false"] {
+  @apply opacity-0;
+}
+
+.carousel-image[data-loaded="true"] {
+  @apply opacity-100;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce layout thrashing */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Hardware acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Optimize font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize scrolling performance */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* GPU acceleration for transforms */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    /* Custom Brand Colors */
+    --ivory-white: 42 20% 97%;
+    --graphene-grey: 0 0% 23%;
+    --antique-gold: 37 28% 63%;
+    --terracotta-clay: 19 49% 46%;
+    --forest-green: 146 60% 23%;
+    --charcoal-black: 0 0% 11%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-ivory text-charcoal font-inter;
+    scroll-behavior: smooth;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure content is visible */
+  .industry-tile {
+    min-height: 450px !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  .brand-card {
+    min-height: 120px !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
+/* Custom animations and keyframes */
+@layer utilities {
+  .parallax-element {
+    will-change: transform;
+  }
+  
+  .fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .fade-in-scale {
+    animation: fadeInScale 1.2s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--antique-gold)), #E6D07A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  }
+
+  /* Navigation hover effects */
+  .hover-nav-link {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hover-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--antique-gold)), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s ease-out;
+    transform-origin: left;
+  }
+
+  .hover-nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Glassmorphism button */
+  .glassmorphism-btn {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(194, 168, 120, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .glassmorphism-btn:hover {
+    background: rgba(194, 168, 120, 0.1);
+    box-shadow: 0 0 20px rgba(194, 168, 120, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Gold glow shadow */
+  .shadow-gold {
+    box-shadow: 0 0 20px rgba(194, 168, 120, 0.4);
+  }
+
+  .hover\:shadow-gold:hover {
+    box-shadow: 0 0 20px rgba(194, 168, 120, 0.6);
+  }
+
+  /* Shine effect for buttons */
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .shine-effect:hover::before {
+    left: 100%;
+  }
+
+  /* Sepia filter for lighting effects */
+  .sepia-20 {
+    filter: sepia(0.2);
+  }
+
+  /* Debug styles for visibility */
+  .debug-visible {
+    border: 2px solid red !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+    min-height: 50px !important;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth scroll snapping */
+.scroll-section {
+  scroll-snap-align: start;
+  scroll-margin-top: 80px;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .scroll-section {
+    scroll-margin-top: 60px;
+  }
+
+  /* Optimize touch scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Improve touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Reduce motion on mobile for better performance */
+  .parallax-element {
+    transform: none !important;
+  }
+
+  /* Mobile-specific animations */
+  .mobile-fade-in {
+    animation: mobileFadeIn 0.6s ease-out forwards;
+  }
+}
+
+/* Mobile-specific keyframes */
+@keyframes mobileFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly interactions */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevent text selection on touch devices */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Fix horizontal scroll containers */
+.horizontal-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto; /* Allow vertical page scroll */
+}
+
+/* Allow all natural scroll behaviors */
+.scroll-container {
+  touch-action: auto; /* Allow all natural touch behaviors */
+  overscroll-behavior-x: contain; /* Contain horizontal overscroll */
+  overscroll-behavior-y: auto; /* Allow vertical page scroll to continue */
+}
+
+/* Product cards - completely allow page scrolling */
+.product-card {
+  /* Remove any properties that might block scrolling */
+  touch-action: auto; /* Allow ALL natural touch behaviors */
+  pointer-events: auto; /* Allow interactions */
+  /* Remove will-change and transitions that might interfere */
+}
+
+/* Ensure scroll items allow all natural scrolling */
+.scroll-item {
+  touch-action: auto; /* Allow ALL touch gestures */
+  pointer-events: auto;
+}
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Improve scroll performance on mobile */
+  .horizontal-scroll {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px;
+  }
+
+  .scroll-item {
+    scroll-snap-align: start;
+  }
+
+  /* Ensure product showcase section allows all natural scrolling */
+  .product-showcase-section {
+    touch-action: auto; /* Allow all natural touch behaviors */
+    overscroll-behavior: auto;
+  }
+
+  .product-showcase-section * {
+    touch-action: auto; /* Allow all natural touch behaviors for all children */
+  }
+
+  /* Force all product-related elements to allow page scrolling */
+  .product-card,
+  .product-card *,
+  .scroll-item,
+  .scroll-item * {
+    touch-action: auto !important;
+    pointer-events: auto !important;
+  }
+}
