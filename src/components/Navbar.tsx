@@ -167,7 +167,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar fixed top-0 left-0 right-0 z-50 w-full overflow-hidden px-1 xs:px-2 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-3 md:py-4 transition-all duration-300">
+      <nav className="navbar fixed top-0 left-0 right-0 z-[100] w-full overflow-visible px-1 xs:px-2 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-3 md:py-4 transition-all duration-300">
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-charcoal/90 before:via-charcoal/80 before:to-charcoal/90 before:backdrop-blur-md before:rounded-2xl before:opacity-95 before:shadow-2xl before:shadow-black/20 before:h-full before:-z-10 py-1 xs:py-1.5 sm:py-2.5 px-1 xs:px-1.5 sm:px-2">
           {/* Logo */}
           <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-3 relative z-50 flex-shrink-0 min-w-0">
@@ -196,7 +196,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navItems.map((item) => (
-              <div key={item.name} className="relative group">
+              <div key={item.name} className="relative group z-50">
                 {item.dropdown ? (
                   <div
                     className={`relative px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg ${textColorClass} font-medium transition-all duration-200 text-sm xl:text-base cursor-pointer hover:bg-gold/5 ${hoverColorClass} flex items-center space-x-1`}
@@ -206,9 +206,14 @@ const Navbar = () => {
                     <span>{item.name}</span>
                     <ChevronDown className="w-3 h-3 xl:w-4 xl:h-4 transition-transform duration-200 group-hover:rotate-180" />
 
-                    <div className={`absolute top-full left-0 mt-2 w-56 bg-charcoal/95 backdrop-blur-md border border-gold/20 rounded-lg shadow-xl transition-all duration-200 ${
+                    <div className={`absolute top-full left-0 mt-2 w-56 bg-charcoal border border-gold/40 rounded-lg shadow-2xl shadow-black/50 backdrop-blur-xl transition-all duration-200 z-[60] ${
                       activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
-                    }`}>
+                    }`}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(45, 55, 72, 0.98) 0%, rgba(45, 55, 72, 0.95) 100%)',
+                      backdropFilter: 'blur(20px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(20px) saturate(180%)'
+                    }}>
                       <div className="py-2">
                         {item.dropdown.map((dropdownItem) => (
                           <div key={dropdownItem.name} className="relative group/sub">
@@ -221,9 +226,14 @@ const Navbar = () => {
                                 <span>{dropdownItem.name}</span>
                                 <ChevronRight className="w-3 h-3" />
 
-                                <div className={`absolute left-full top-0 ml-1 w-64 bg-charcoal/95 backdrop-blur-md border border-gold/20 rounded-lg shadow-xl transition-all duration-200 ${
+                                <div className={`absolute left-full top-0 ml-1 w-64 bg-charcoal border border-gold/40 rounded-lg shadow-2xl shadow-black/50 backdrop-blur-xl transition-all duration-200 z-[70] ${
                                   activeSubDropdown === dropdownItem.name ? 'opacity-100 visible translate-x-0' : 'opacity-0 invisible -translate-x-2'
-                                }`}>
+                                }`}
+                                style={{
+                                  background: 'linear-gradient(135deg, rgba(45, 55, 72, 0.98) 0%, rgba(45, 55, 72, 0.95) 100%)',
+                                  backdropFilter: 'blur(20px) saturate(180%)',
+                                  WebkitBackdropFilter: 'blur(20px) saturate(180%)'
+                                }}>
                                   <div className="py-2">
                                     {dropdownItem.subDropdown?.map((subItem) => (
                                       <button
