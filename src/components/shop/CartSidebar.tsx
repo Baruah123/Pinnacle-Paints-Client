@@ -25,15 +25,14 @@ const CartSidebar = () => {
   if (!state.isCartOpen) return null;
 
   return (
-    <>
-      {/* Overlay */}
+    <>      {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110]"
         onClick={() => dispatch({ type: 'TOGGLE_CART' })}
       />
 
       {/* Cart Sidebar */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[120] transform transition-transform duration-300 ease-in-out">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-graphene/10">
