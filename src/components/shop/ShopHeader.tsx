@@ -66,8 +66,8 @@ const ShopHeader = () => {
           <ShoppingBag className="w-5 h-5 mr-2" />
           Cart
           {cartItemCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-gold text-charcoal text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-              {cartItemCount}
+            <span className="absolute -top-0.5 -right-0.5 bg-gold text-charcoal text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md border border-white z-[110] transition-all duration-200 min-w-[16px]">
+              {cartItemCount > 99 ? '99+' : cartItemCount}
             </span>
           )}
         </Button>

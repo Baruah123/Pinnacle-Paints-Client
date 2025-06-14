@@ -167,7 +167,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar fixed top-0 left-0 right-0 z-[100] w-full overflow-visible px-1 xs:px-2 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-3 md:py-4 transition-all duration-300">
+      <nav className={`navbar fixed top-0 left-0 right-0 w-full overflow-visible px-1 xs:px-2 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-3 md:py-4 transition-all duration-300 ${isMobileMenuOpen ? 'z-30' : 'z-[100]'}`}>
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-charcoal/90 before:via-charcoal/80 before:to-charcoal/90 before:backdrop-blur-md before:rounded-2xl before:opacity-95 before:shadow-2xl before:shadow-black/20 before:h-full before:-z-10 py-1 xs:py-1.5 sm:py-2.5 px-1 xs:px-1.5 sm:px-2">
           {/* Logo */}
           <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-3 relative z-50 flex-shrink-0 min-w-0">
@@ -300,8 +300,8 @@ const Navbar = () => {
             >
               <ShoppingBag className="w-5 h-5 xl:w-6 xl:h-6 transition-transform duration-200 hover:scale-110" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-charcoal text-xs font-bold rounded-full h-5 w-5 xl:h-6 xl:w-6 flex items-center justify-center shadow-lg transition-all duration-200">
-                  {cartItemCount}
+                <span className="absolute -top-0.5 -right-0.5 xl:-top-1 xl:-right-1 bg-gold text-charcoal text-[10px] xl:text-xs font-bold rounded-full h-4 w-4 xl:h-[18px] xl:w-[18px] flex items-center justify-center shadow-md border border-white z-[110] transition-all duration-200 min-w-[16px] xl:min-w-[18px]">
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
             </button>
@@ -322,7 +322,7 @@ const Navbar = () => {
             >
               <ShoppingBag className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 transition-transform duration-200 hover:scale-110" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-gold text-charcoal font-bold rounded-full h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-5 sm:w-5 flex items-center justify-center shadow-lg transition-all duration-200 text-[7px] xs:text-[8px] sm:text-xs">
+                <span className="absolute top-0 right-0 xs:-top-0.5 xs:-right-0.5 sm:-top-0.5 sm:-right-0.5 bg-gold text-charcoal font-bold rounded-full h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4 flex items-center justify-center shadow-md border border-white z-[110] transition-all duration-200 text-[8px] xs:text-[9px] sm:text-[10px] min-w-[12px] xs:min-w-[14px] sm:min-w-[16px]">
                   {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
@@ -347,14 +347,14 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 lg:hidden"
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu - Full Page */}
-      <div className={`lg:hidden fixed inset-0 z-50 bg-gradient-to-b from-charcoal to-charcoal/95 backdrop-blur-lg transform transition-all duration-500 ease-out overflow-y-auto ${
+      <div className={`lg:hidden fixed inset-0 z-[130] bg-gradient-to-b from-charcoal to-charcoal/95 backdrop-blur-lg transform transition-all duration-500 ease-out overflow-y-auto ${
         isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'
       }`}>
         <div className="flex flex-col min-h-screen max-w-6xl mx-auto px-4 sm:px-6">
@@ -383,8 +383,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex-1 flex flex-col justify-center py-6">
-            <div className="grid grid-cols-1 gap-2 py-6">
-              {navItems.map((item) => (
+            <div className="grid grid-cols-1 gap-2 py-6">              {navItems.map((item) => (
                 <div key={item.name}>
                   {item.dropdown ? (
                     <div>
@@ -487,13 +486,15 @@ const Navbar = () => {
                   }}
                   className="w-full max-w-xs bg-charcoal/90 hover:bg-charcoal text-ivory font-semibold text-base rounded-lg py-3 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3"
                 >
-                  <ShoppingBag className="w-5 h-5" />
+                  <div className="relative">
+                    <ShoppingBag className="w-5 h-5" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 bg-gold text-charcoal text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md border border-white z-[110] transition-all duration-200 min-w-[16px]">
+                        {cartItemCount > 99 ? '99+' : cartItemCount}
+                      </span>
+                    )}
+                  </div>
                   <span>View Cart</span>
-                  {cartItemCount > 0 && (
-                    <span className="bg-gold text-charcoal text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                      {cartItemCount > 99 ? '99+' : cartItemCount}
-                    </span>
-                  )}
                 </button>
 
                 <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="w-full max-w-xs">
