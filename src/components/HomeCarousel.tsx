@@ -112,7 +112,8 @@ const HomeCarousel: React.FC = () => {
             height: 100dvh;
             min-height: 100vh;
             min-height: 100dvh;
-            width: 100vw;
+            width: 100%;
+            max-width: 100vw;
             position: relative;
             overflow: hidden;
           }
@@ -121,7 +122,8 @@ const HomeCarousel: React.FC = () => {
             height: 100dvh !important;
             min-height: 100vh !important;
             min-height: 100dvh !important;
-            width: 100vw !important;
+            width: 100% !important;
+            max-width: 100vw !important;
             object-fit: cover !important;
           }
           .swiper img {

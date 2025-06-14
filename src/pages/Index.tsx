@@ -2,9 +2,8 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import HomeCarousel from '@/components/HomeCarousel';
-import FromSoilToSurface from '@/components/FromSoilToSurface';
+import AboutUs from '@/components/AboutUs';
 import GlobalJourney from '@/components/GlobalJourney';
-import MaterialAlchemy from '@/components/MaterialAlchemy';
 import AutoRotatingBrands from '@/components/AutoRotatingBrands';
 
 import BrandCollaboration from '@/components/BrandCollaboration';
@@ -28,9 +27,8 @@ const Index = () => {
     <div className="min-h-screen">
       <Navbar />
       <HomeCarousel />
-      <FromSoilToSurface />
+      <AboutUs />
       <GlobalJourney />
-      <MaterialAlchemy />
       <AutoRotatingBrands />
       <BrandCollaboration />
       <IndustrialCoatings />

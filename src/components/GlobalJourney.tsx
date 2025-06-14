@@ -311,37 +311,7 @@ const ProductShowcase = () => {
           ))}
         </div>
 
-        {/* Enhanced Navigation Dots - Touch Friendly */}
-        <div className="flex justify-center mt-4 xs:mt-6 sm:mt-8 md:mt-12 gap-1.5 xs:gap-2 sm:gap-3">
-          {products.map((product, index) => (
-            <button
-              key={index}
-              className={`touch-target relative transition-all duration-200 rounded-full touch-manipulation ${
-                index === activeProduct
-                  ? 'w-5 h-2 xs:w-6 xs:h-2.5 sm:w-8 sm:h-3 bg-gold shadow-md shadow-gold/20'
-                  : 'w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 bg-graphene/30'
-              } ${isMobile ? 'min-w-[48px] min-h-[48px] p-2' : ''}`}
-              onClick={() => scrollToProduct(index)}
-              aria-label={`View ${product.name} product`}
-              style={isMobile ? {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transform: 'translateZ(0)' // Force hardware acceleration
-              } : {
-                transform: 'translateZ(0)' // Force hardware acceleration
-              }}
-            >
-              {index === activeProduct && (
-                <span className="absolute inset-0 rounded-full bg-gold opacity-20" />
-              )}
-              {/* Touch target for mobile */}
-              {isMobile && (
-                <span className="sr-only">Product {index + 1}</span>
-              )}
-            </button>
-          ))}
-        </div>
+
 
         {/* Mobile scroll hint */}
         <div className="text-center mt-3 xs:mt-4 sm:mt-6 md:hidden">

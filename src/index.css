@@ -66,6 +66,17 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Reduce layout thrashing */
@@ -202,13 +213,27 @@ body {
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
   body {
     @apply bg-ivory text-charcoal font-inter;
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
-  html {
-    scroll-behavior: smooth;
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
   /* Ensure content is visible */
@@ -504,4 +529,146 @@ body {
     touch-action: auto !important;
     pointer-events: auto !important;
   }
+
+  /* Navbar mobile optimizations */
+  .navbar {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .navbar > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure all navbar children respect container width */
+  .navbar * {
+    box-sizing: border-box !important;
+  }
 }
+
+/* Extra small screens optimizations */
+@media (max-width: 480px) {
+  .navbar {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  .navbar > div {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  /* Force minimal spacing on extra small screens */
+  .navbar .flex {
+    gap: 0.125rem !important;
+  }
+
+  /* Ensure text doesn't wrap and cause overflow */
+  .navbar span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Reduce button sizes on very small screens */
+  .navbar button {
+    padding: 0.25rem !important;
+  }
+
+  /* Hide less critical elements on very small screens */
+  .navbar .hidden {
+    display: none !important;
+  }
+}
+
+/* Global mobile overflow prevention */
+@media (max-width: 768px) {
+  /* Prevent any element from causing horizontal overflow */
+  * {
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure all containers respect viewport width */
+  .container, .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .max-w-xl {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Fix carousel and full-width elements */
+  .home-carousel, .swiper, .swiper-wrapper, .swiper-slide {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Ensure images don't overflow */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Fix any grid or flex layouts that might overflow */
+  .grid, .flex {
+    overflow-x: hidden !important;
+  }
+
+  /* Ensure text doesn't cause overflow */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Fix any absolute positioned elements */
+  .absolute {
+    max-width: 100vw !important;
+  }
+}
+
+/* Critical mobile viewport fixes - highest priority */
+@media screen and (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative !important;
+  }
+
+  #root {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Prevent any element from extending beyond viewport */
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fix common overflow culprits */
+  .w-screen, .min-w-screen {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure all sections fit within viewport */
+  section, main, div, article, aside {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+}
+
+

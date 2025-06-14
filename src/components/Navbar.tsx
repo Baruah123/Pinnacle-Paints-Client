@@ -6,7 +6,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useShop } from '@/contexts/ShopContext';
 import useCartAnimation from '@/hooks/use-cart-animation';
 
-// Add this to the top of the file to detect extra small screens
 const useIsExtraSmall = () => {
   const [isXs, setIsXs] = useState(false);
   
@@ -35,36 +34,30 @@ const Navbar = () => {
   const { dispatch } = useShop();
   const { cartItemCount } = useCartAnimation();
   
-  // Prevent body scrolling when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
-      // Disable scrolling on body when menu is open
       document.body.style.overflow = 'hidden';
     } else {
-      // Re-enable scrolling when menu is closed
       document.body.style.overflow = '';
     }
     
-    // Cleanup function to ensure scrolling is re-enabled if component unmounts
     return () => {
       document.body.style.overflow = '';
     };
   }, [isMobileMenuOpen]);
   
-  // Determine if we're on a light background page
-  const lightBackgroundPages = ['/shop']; // Removed '/contact' as it has a dark background
-  const isLightPage = lightBackgroundPages.includes(location.pathname);  // Close mobile menu when route changes
+  const lightBackgroundPages = ['/shop'];
+  const isLightPage = lightBackgroundPages.includes(location.pathname);
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setMobileDropdowns({});
     setMobileSubDropdowns({});
     setActiveDropdown(null);
     setActiveSubDropdown(null);
-    // Ensure scrolling is re-enabled when navigating to a new page
     document.body.style.overflow = '';
   }, [location.pathname]);
 
-  // Close mobile menu when switching screen size
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024 && isMobileMenuOpen) {
@@ -76,14 +69,12 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu when switching to desktop
   useEffect(() => {
     if (!isMobile && isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
   }, [isMobile, isMobileMenuOpen]);
 
-  // Close dropdowns when mobile menu closes
   useEffect(() => {
     if (!isMobileMenuOpen) {
       setMobileDropdowns({});
@@ -92,6 +83,7 @@ const Navbar = () => {
       setActiveSubDropdown(null);
     }
   }, [isMobileMenuOpen]);
+
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'Story', href: '/story' },
@@ -115,8 +107,26 @@ const Navbar = () => {
           href: '/vendors/diamond-collection',
           hasSubDropdown: true,
           subDropdown: [
-            { name: 'Diamond Paints Catalog', href: '/Catalog/diamond_paints_catalog.pdf', isDownload: true },
-            { name: 'Airless Spray Equipment Catalog', href: '/Catalog/airless_spray_equipment_catalog.pdf', isDownload: true }
+            { 
+              name: 'Electrical Paints', 
+              href: '#',
+              description: 'Superior results for professionals and enthusiasts' 
+            },
+            { 
+              name: 'Spray Equipment', 
+              href: '#',
+              description: 'Premium quality tools for perfect application' 
+            },
+            { 
+              name: 'View Catalog', 
+              href: '/Catalog/diamond_paints_catalog.pdf', 
+              isDownload: true 
+            },
+            { 
+              name: 'Equipment Catalog', 
+              href: '/Catalog/airless_spray_equipment_catalog.pdf', 
+              isDownload: true 
+            }
           ]
         },
         { name: 'Premera Floor Coatings', href: '/vendors/premera-floor-coatings' },
@@ -128,12 +138,12 @@ const Navbar = () => {
       ]
     },
     { name: 'Contact', href: '/contact' }
-  ];  // Dynamic text color based on page state
+  ];
+
   const getTextColor = () => {
-    // Adjust text color for extra small screens if needed
     if (isXs && location.pathname === '/') return 'text-white';
     if (location.pathname === '/shop') return 'text-ivory';
-    if (location.pathname === '/contact') return 'text-ivory'; // Ensure text is visible on Contact page
+    if (location.pathname === '/contact') return 'text-ivory';
     if (isLightPage) return 'text-charcoal';
     return 'text-ivory';
   };
@@ -145,7 +155,6 @@ const Navbar = () => {
   const textColorClass = getTextColor();
   const hoverColorClass = getHoverColor();
 
-  // Handle PDF download
   const handlePdfDownload = (href: string, fileName: string) => {
     const link = document.createElement('a');
     link.href = href;
@@ -154,35 +163,41 @@ const Navbar = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };  return (
-    <>      <nav className="navbar fixed top-0 left-0 right-0 z-50 px-2 xs:px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 transition-all duration-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-charcoal/90 before:via-charcoal/80 before:to-charcoal/90 before:backdrop-blur-md before:rounded-2xl before:opacity-95 before:shadow-2xl before:shadow-black/20 before:h-full before:-z-10 py-1.5 xs:py-2 sm:py-2.5 px-1.5 xs:px-2 sm:px-2">          {/* Logo */}          <div className="flex items-center space-x-1.5 xs:space-x-2 sm:space-x-3 relative z-50">
-            <Link to="/" className="flex items-center space-x-1.5 xs:space-x-2 sm:space-x-3 md:space-x-4 group">
-              <div className="relative overflow-hidden rounded-xl shadow-lg bg-gradient-to-br from-charcoal/60 to-charcoal/80 backdrop-blur-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-gold/20 p-[2px] sm:p-[3px]">
-                <div className="absolute inset-0 bg-gradient-to-tr from-gold/80 via-gold/30 to-gold/80 rounded-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                <div className="relative bg-charcoal/90 rounded-lg p-1 sm:p-1.5 overflow-hidden">
+  };
+
+  return (
+    <>
+      <nav className="navbar fixed top-0 left-0 right-0 z-50 w-full overflow-hidden px-1 xs:px-2 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-3 md:py-4 transition-all duration-300">
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-charcoal/90 before:via-charcoal/80 before:to-charcoal/90 before:backdrop-blur-md before:rounded-2xl before:opacity-95 before:shadow-2xl before:shadow-black/20 before:h-full before:-z-10 py-1 xs:py-1.5 sm:py-2.5 px-1 xs:px-1.5 sm:px-2">
+          {/* Logo */}
+          <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-3 relative z-50 flex-shrink-0 min-w-0">
+            <Link to="/" className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-3 md:space-x-4 group min-w-0">
+              <div className="relative overflow-hidden rounded-lg xs:rounded-xl shadow-lg bg-gradient-to-br from-charcoal/60 to-charcoal/80 backdrop-blur-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-gold/20 p-[1.5px] xs:p-[2px] sm:p-[3px] flex-shrink-0">
+                <div className="absolute inset-0 bg-gradient-to-tr from-gold/80 via-gold/30 to-gold/80 rounded-lg xs:rounded-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                <div className="relative bg-charcoal/90 rounded-md xs:rounded-lg p-0.5 xs:p-1 sm:p-1.5 overflow-hidden">
                   <img
                     src="/logos/logo.png"
                     alt="Pinnacle Paints"
-                    className="h-6 w-6 xs:h-7 xs:w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 transition-transform duration-300 group-hover:scale-110 drop-shadow-lg"
+                    className="h-5 w-5 xs:h-6 xs:w-6 sm:h-8 sm:w-8 md:h-9 md:w-9 transition-transform duration-300 group-hover:scale-110 drop-shadow-lg flex-shrink-0"
                   />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm xs:text-base sm:text-lg md:text-xl font-bold tracking-wide text-white drop-shadow-lg transition-all duration-300 group-hover:text-gold/90">
+              <div className="flex flex-col min-w-0 flex-shrink">
+                <span className="text-xs xs:text-sm sm:text-lg md:text-xl font-bold tracking-wide text-white drop-shadow-lg transition-all duration-300 group-hover:text-gold/90 truncate">
                   Pinnacle Paints
                 </span>
-                <span className="text-[0.6rem] xs:text-[0.65rem] sm:text-xs font-medium text-gold/90 tracking-wider uppercase opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-[0.5rem] xs:text-[0.6rem] sm:text-xs font-medium text-gold/90 tracking-wider uppercase opacity-90 group-hover:opacity-100 transition-opacity duration-300 truncate">
                   Premium Finishes
                 </span>
               </div>
             </Link>
-          </div>          {/* Desktop Navigation */}
+          </div>
+
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navItems.map((item) => (
               <div key={item.name} className="relative group">
                 {item.dropdown ? (
-                  // Dropdown menu item
                   <div
                     className={`relative px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg ${textColorClass} font-medium transition-all duration-200 text-sm xl:text-base cursor-pointer hover:bg-gold/5 ${hoverColorClass} flex items-center space-x-1`}
                     onMouseEnter={() => setActiveDropdown(item.name)}
@@ -191,7 +206,6 @@ const Navbar = () => {
                     <span>{item.name}</span>
                     <ChevronDown className="w-3 h-3 xl:w-4 xl:h-4 transition-transform duration-200 group-hover:rotate-180" />
 
-                    {/* Dropdown Menu */}
                     <div className={`absolute top-full left-0 mt-2 w-56 bg-charcoal/95 backdrop-blur-md border border-gold/20 rounded-lg shadow-xl transition-all duration-200 ${
                       activeDropdown === item.name ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                     }`}>
@@ -199,7 +213,6 @@ const Navbar = () => {
                         {item.dropdown.map((dropdownItem) => (
                           <div key={dropdownItem.name} className="relative group/sub">
                             {dropdownItem.hasSubDropdown ? (
-                              // Item with sub-dropdown
                               <div
                                 className="flex items-center justify-between px-4 py-2 text-sm text-ivory hover:text-gold hover:bg-gold/10 transition-all duration-200 cursor-pointer"
                                 onMouseEnter={() => setActiveSubDropdown(dropdownItem.name)}
@@ -208,7 +221,6 @@ const Navbar = () => {
                                 <span>{dropdownItem.name}</span>
                                 <ChevronRight className="w-3 h-3" />
 
-                                {/* Sub-dropdown Menu */}
                                 <div className={`absolute left-full top-0 ml-1 w-64 bg-charcoal/95 backdrop-blur-md border border-gold/20 rounded-lg shadow-xl transition-all duration-200 ${
                                   activeSubDropdown === dropdownItem.name ? 'opacity-100 visible translate-x-0' : 'opacity-0 invisible -translate-x-2'
                                 }`}>
@@ -223,17 +235,21 @@ const Navbar = () => {
                                             window.location.href = subItem.href;
                                           }
                                         }}
-                                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-ivory hover:text-gold hover:bg-gold/10 transition-all duration-200"
+                                        className="w-full text-left px-4 py-2 text-sm text-ivory hover:text-gold hover:bg-gold/10 transition-all duration-200"
                                       >
-                                        <Download className="w-3 h-3" />
-                                        {subItem.name}
+                                        <div className="flex flex-col">
+                                          <span className="font-medium">{subItem.name}</span>
+                                          {subItem.description && (
+                                            <span className="text-xs text-ivory/60 mt-0.5">{subItem.description}</span>
+                                          )}
+                                        </div>
+                                        {subItem.isDownload && <Download className="w-3 h-3 ml-auto" />}
                                       </button>
                                     ))}
                                   </div>
                                 </div>
                               </div>
                             ) : (
-                              // Regular dropdown item
                               <Link
                                 to={dropdownItem.href}
                                 className="block px-4 py-2 text-sm text-ivory hover:text-gold hover:bg-gold/10 transition-all duration-200"
@@ -247,7 +263,6 @@ const Navbar = () => {
                     </div>
                   </div>
                 ) : (
-                  // Regular menu item
                   <Link
                     to={item.href}
                     className={`relative group overflow-hidden px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg ${textColorClass} font-medium transition-all duration-200 text-sm xl:text-base ${
@@ -264,8 +279,10 @@ const Navbar = () => {
                 )}
               </div>
             ))}
-          </div>          {/* Desktop Auth Buttons & CTA */}          <div className="hidden lg:flex items-center space-x-2 xl:space-x-4">
-            {/* Cart Button */}
+          </div>
+
+          {/* Desktop Auth Buttons & CTA */}
+          <div className="hidden lg:flex items-center space-x-2 xl:space-x-4">
             <button
               onClick={() => dispatch({ type: 'TOGGLE_CART' })}
               className={`relative p-2 xl:p-2.5 rounded-lg transition-all duration-300 hover:bg-gold/10 ${textColorClass} ${hoverColorClass}`}
@@ -284,49 +301,53 @@ const Navbar = () => {
                 Sign Up
               </Button>
             </Link>
-          </div>          {/* Mobile/Tablet Auth Buttons */}          <div className="flex lg:hidden items-center space-x-1 sm:space-x-2">
-            {/* Mobile Cart Button */}
+          </div>
+
+          {/* Mobile/Tablet Auth Buttons */}
+          <div className="flex lg:hidden items-center space-x-0.5 xs:space-x-1 sm:space-x-2 flex-shrink-0">
             <button
               onClick={() => dispatch({ type: 'TOGGLE_CART' })}
-              className={`relative p-1.5 sm:p-2 rounded-lg transition-all duration-300 hover:bg-gold/10 ${textColorClass} ${hoverColorClass}`}
+              className={`relative p-1 xs:p-1.5 sm:p-2 rounded-lg transition-all duration-300 hover:bg-gold/10 ${textColorClass} ${hoverColorClass} flex-shrink-0`}
               aria-label="Shopping Cart"
             >
-              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 hover:scale-110" />
+              <ShoppingBag className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 transition-transform duration-200 hover:scale-110" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-gold text-charcoal font-bold rounded-full h-3.5 w-3.5 sm:h-5 sm:w-5 flex items-center justify-center shadow-lg transition-all duration-200 text-[8px] sm:text-xs">
+                <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-gold text-charcoal font-bold rounded-full h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-5 sm:w-5 flex items-center justify-center shadow-lg transition-all duration-200 text-[7px] xs:text-[8px] sm:text-xs">
                   {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
             </button>
 
-            <Link to="/signup" className="hidden xs:block sm:block">
-              <Button size="sm" className="bg-gradient-to-r from-gold/80 to-gold hover:from-gold hover:to-gold/90 text-charcoal font-semibold text-[0.65rem] xs:text-xs px-2 xs:px-3 py-1 xs:py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                Sign Up
+            <Link to="/signup" className="hidden xs:block sm:block flex-shrink-0">
+              <Button size="sm" className="bg-gradient-to-r from-gold/80 to-gold hover:from-gold hover:to-gold/90 text-charcoal font-semibold text-[0.6rem] xs:text-[0.65rem] sm:text-xs px-1.5 xs:px-2 sm:px-3 py-0.5 xs:py-1 sm:py-1.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 min-w-0">
+                <span className="truncate">Sign Up</span>
               </Button>
             </Link>
 
-            {/* Mobile Menu Button */}
             <button
-              className={`${textColorClass} p-1.5 sm:p-2 rounded-lg hover:bg-gold/10 transition-all duration-200`}
+              className={`${textColorClass} p-1 xs:p-1.5 sm:p-2 rounded-lg hover:bg-gold/10 transition-all duration-200 flex-shrink-0`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
-              {isMobileMenuOpen ? <X size={18} className="text-gold sm:w-5 sm:h-5" /> : <Menu size={18} className="sm:w-5 sm:h-5" />}
+              {isMobileMenuOpen ? <X size={16} className="text-gold xs:w-4 xs:h-4 sm:w-5 sm:h-5" /> : <Menu size={16} className="xs:w-4 xs:h-4 sm:w-5 sm:h-5" />}
             </button>
           </div>
         </div>
-      </nav>      {/* Mobile Menu Overlay */}
+      </nav>
+
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div 
           className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
-      )}      {/* Mobile Menu - Full Page */}
+      )}
+
+      {/* Mobile Menu - Full Page */}
       <div className={`lg:hidden fixed inset-0 z-50 bg-gradient-to-b from-charcoal to-charcoal/95 backdrop-blur-lg transform transition-all duration-500 ease-out overflow-y-auto ${
         isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'
       }`}>
         <div className="flex flex-col min-h-screen max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Mobile menu header */}
           <div className="flex items-center justify-between pt-6 pb-4 border-b border-gold/30">
             <div className="flex items-center space-x-3">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center space-x-3 group">
@@ -349,13 +370,13 @@ const Navbar = () => {
             >
               <X size={24} />
             </button>
-          </div>          {/* Mobile menu content */}
+          </div>
+
           <div className="flex-1 flex flex-col justify-center py-6">
             <div className="grid grid-cols-1 gap-2 py-6">
               {navItems.map((item) => (
                 <div key={item.name}>
                   {item.dropdown ? (
-                    // Dropdown menu item for mobile
                     <div>
                       <button
                         className="w-full text-left text-ivory font-medium py-4 px-4 rounded-lg transition-all duration-300 text-lg hover:bg-gold/5 hover:text-gold flex items-center justify-between"
@@ -370,13 +391,11 @@ const Navbar = () => {
                         }`} />
                       </button>
 
-                      {/* Mobile Dropdown Items */}
                       {mobileDropdowns[item.name] && (
                         <div className="ml-4 mt-2 space-y-1">
                           {item.dropdown.map((dropdownItem) => (
                             <div key={dropdownItem.name}>
                               {dropdownItem.hasSubDropdown ? (
-                                // Item with sub-dropdown for mobile
                                 <div>
                                   <button
                                     className="w-full text-left text-ivory/80 font-medium py-3 px-4 rounded-lg transition-all duration-300 text-base hover:bg-gold/5 hover:text-gold flex items-center justify-between"
@@ -391,7 +410,6 @@ const Navbar = () => {
                                     }`} />
                                   </button>
 
-                                  {/* Mobile Sub-dropdown Items */}
                                   {mobileSubDropdowns[dropdownItem.name] && (
                                     <div className="ml-4 mt-1 space-y-1">
                                       {dropdownItem.subDropdown?.map((subItem) => (
@@ -407,15 +425,19 @@ const Navbar = () => {
                                           }}
                                           className="w-full text-left flex items-center gap-2 text-ivory/70 font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm hover:bg-gold/5 hover:text-gold"
                                         >
-                                          <Download className="w-3 h-3" />
-                                          {subItem.name}
+                                          {subItem.isDownload && <Download className="w-3 h-3" />}
+                                          <div className="flex flex-col">
+                                            <span>{subItem.name}</span>
+                                            {subItem.description && (
+                                              <span className="text-xs text-ivory/50">{subItem.description}</span>
+                                            )}
+                                          </div>
                                         </button>
                                       ))}
                                     </div>
                                   )}
                                 </div>
                               ) : (
-                                // Regular dropdown item for mobile
                                 <Link
                                   to={dropdownItem.href}
                                   className="block text-ivory/80 font-medium py-3 px-4 rounded-lg transition-all duration-300 text-base hover:bg-gold/5 hover:text-gold hover:translate-x-1"
@@ -430,7 +452,6 @@ const Navbar = () => {
                       )}
                     </div>
                   ) : (
-                    // Regular menu item for mobile
                     <Link
                       to={item.href}
                       className={`block text-ivory font-medium py-4 px-4 rounded-lg transition-all duration-300 text-lg ${
@@ -447,10 +468,8 @@ const Navbar = () => {
               ))}
             </div>
             
-            {/* Mobile cart and auth buttons */}
             <div className="mt-auto pt-8 pb-10 border-t border-gold/20 bg-gradient-to-b from-transparent to-gold/5">
               <div className="flex flex-col items-center space-y-4">
-                {/* Mobile Cart Button in Menu */}
                 <button
                   onClick={() => {
                     dispatch({ type: 'TOGGLE_CART' });
