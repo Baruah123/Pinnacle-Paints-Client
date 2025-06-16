@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useShop } from '@/contexts/ShopContext';
 import { addOrderToStorage, generateOrderNumber, generateOrderId, Order } from '@/utils/orderUtils';
@@ -169,11 +168,9 @@ const Checkout = () => {
       // Handle error (could show error message to user)
     }
   };
-
   if (state.cart.length === 0) {
     return (
       <div className="min-h-screen bg-ivory">
-        <Navbar />
         <div className="pt-20 sm:pt-24 md:pt-28 pb-16">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -193,7 +190,7 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer hideConsultationButton={true} />
       </div>
     );
   }
@@ -203,11 +200,8 @@ const Checkout = () => {
     { number: 2, title: 'Shipping', icon: Truck },
     { number: 3, title: 'Payment', icon: CreditCard }
   ];
-
   return (
     <div className="min-h-screen bg-ivory">
-      <Navbar />
-      
       <div className="pt-20 sm:pt-24 md:pt-28 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -565,7 +559,7 @@ const Checkout = () => {
         </div>
       </div>
       
-      <Footer />
+      <Footer hideConsultationButton={true} />
     </div>
   );
 };

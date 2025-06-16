@@ -1,8 +1,14 @@
 
 import React from 'react';
 import { Instagram, ChevronUp } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
-const Footer = () => {
+interface FooterProps {
+  hideConsultationButton?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ hideConsultationButton = false }) => {
+  const location = useLocation();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -75,15 +81,16 @@ const Footer = () => {
               <ChevronUp size={20} className="text-gold" />
             </button>
           </div>
-        </div>
-      </div>
+        </div>      </div>
 
-      {/* Sticky CTA Button - Hidden on mobile */}
-      <div className="fixed bottom-6 right-6 z-50 hidden md:block">
-        <button className="bg-gold hover:bg-gold/90 text-charcoal px-6 py-3 rounded-full font-medium shadow-2xl hover:shadow-gold transition-all duration-300 transform hover:scale-105">
-          Book a Private Consultation
-        </button>
-      </div>
+      {/* Sticky CTA Button - Hidden on checkout page and mobile */}
+      {!hideConsultationButton && location.pathname !== '/checkout' && (
+        <div className="fixed bottom-6 right-6 z-50 hidden md:block">
+          <button className="bg-gold hover:bg-gold/90 text-charcoal px-6 py-3 rounded-full font-medium shadow-2xl hover:shadow-gold transition-all duration-300 transform hover:scale-105">
+            Book a Private Consultation
+          </button>
+        </div>
+      )}
     </footer>
   );
 };
