@@ -5,6 +5,7 @@ import { ShoppingBag, Star, Eye, ChevronLeft, ChevronRight, ArrowRight, Filter }
 import { useShop, Product } from '@/contexts/ShopContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
+import ProductModal from '@/components/shop/ProductModal';
 
 const GlobalJourney = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -20,11 +21,14 @@ const GlobalJourney = () => {
     return state.products
       .filter(product => product.isPopular && product.inStock)
       .slice(0, 12); // Limit to 12 products for better performance
-  }, [state.products]);
-  // Scroll to specific product
+  }, [state.products]);  // Scroll to specific product
   const scrollToProduct = (index: number) => {
     if (scrollRef.current) {
       const container = scrollRef.current;
+      
+      // Add a class to temporarily disable scroll-snap during programmatic scrolling
+      container.classList.add('scrolling-programmatically');
+      
       const items = Array.from(container.children);
       
       if (items.length > 0) {
@@ -32,25 +36,54 @@ const GlobalJourney = () => {
         
         // On mobile, ensure we scroll to center the product card
         if (isMobile) {
-          const containerWidth = container.clientWidth;
-          const itemWidth = item.offsetWidth;
-          const scrollPosition = item.offsetLeft - (containerWidth - itemWidth) / 2;
-          
-          container.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
+          requestAnimationFrame(() => {
+            const containerWidth = container.clientWidth;
+            const itemWidth = item.offsetWidth;
+            const scrollPosition = item.offsetLeft - (containerWidth - itemWidth) / 2;
+            
+            // Use a simple animation for smoother scrolling
+            const startPosition = container.scrollLeft;
+            const distance = scrollPosition - startPosition;
+            const duration = 300; // ms
+            const startTime = performance.now();
+            
+            const scrollAnimation = (currentTime: number) => {
+              const elapsedTime = currentTime - startTime;
+              const progress = Math.min(elapsedTime / duration, 1);
+              // Use ease-out cubic function for smoother movement
+              const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+              
+              container.scrollLeft = startPosition + (distance * easeOutCubic);
+              
+              if (progress < 1) {
+                window.requestAnimationFrame(scrollAnimation);
+              } else {
+                // Re-enable scroll snap after animation completes
+                setTimeout(() => {
+                  container.classList.remove('scrolling-programmatically');
+                }, 50);
+              }
+            };
+            
+            window.requestAnimationFrame(scrollAnimation);
           });
         } else {
           // Desktop behavior - scroll by card width + gap
-          const cardWidth = item.offsetWidth || 0;
-          const gap = 20; // gap between cards
-          const scrollPosition = index * (cardWidth + gap);
-          
-          container.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-          });
-        }
+          requestAnimationFrame(() => {
+            const cardWidth = item.offsetWidth || 0;
+            const gap = 20; // gap between cards
+            const scrollPosition = index * (cardWidth + gap);
+            
+            container.scrollTo({
+              left: scrollPosition,
+              behavior: 'smooth'
+            });
+            
+            // Re-enable scroll snap after animation completes
+            setTimeout(() => {
+              container.classList.remove('scrolling-programmatically');
+            }, 300);
+          });        }
         
         setActiveIndex(index);
       }
@@ -67,38 +100,46 @@ const GlobalJourney = () => {
     const newIndex = Math.min(featuredProducts.length - 1, activeIndex + 1);
     scrollToProduct(newIndex);
   };
-    // Handle scroll to update active index and scroll indicators
+  // Handle scroll to update active index and scroll indicators
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return;
 
-    const container = scrollRef.current;
-    const scrollLeft = container.scrollLeft;
-    const containerWidth = container.clientWidth;
-    const items = Array.from(container.children) as HTMLElement[];
-    
-    // Find which item is most visible in the viewport
-    let bestVisibleIndex = 0;
-    let maxVisibleWidth = 0;
-    
-    items.forEach((item, index) => {
-      const itemLeft = item.offsetLeft;
-      const itemWidth = item.offsetWidth;
-      const itemRight = itemLeft + itemWidth;
+    // Use requestAnimationFrame to optimize scroll performance
+    requestAnimationFrame(() => {
+      const container = scrollRef.current;
+      if (!container) return;
       
-      // Calculate how much of the item is visible
-      const visibleLeft = Math.max(itemLeft, scrollLeft);
-      const visibleRight = Math.min(itemRight, scrollLeft + containerWidth);
-      const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+      const scrollLeft = container.scrollLeft;
+      const containerWidth = container.clientWidth;
       
-      // If this item has more visible area than previous best, update
-      if (visibleWidth > maxVisibleWidth) {
-        maxVisibleWidth = visibleWidth;
-        bestVisibleIndex = index;
-      }
-    });
+      // Only process visible items for better performance
+      const items = Array.from(container.children) as HTMLElement[];
+      
+      // Find which item is most visible in the viewport
+      let bestVisibleIndex = 0;
+      let maxVisibleWidth = 0;
+      
+      items.forEach((item, index) => {
+        const itemLeft = item.offsetLeft;
+        const itemWidth = item.offsetWidth;
+        const itemRight = itemLeft + itemWidth;
+        
+        // Calculate how much of the item is visible
+        const visibleLeft = Math.max(itemLeft, scrollLeft);
+        const visibleRight = Math.min(itemRight, scrollLeft + containerWidth);
+        const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+        
+        // If this item has more visible area than previous best, update
+        if (visibleWidth > maxVisibleWidth) {
+          maxVisibleWidth = visibleWidth;
+          bestVisibleIndex = index;
+        }
+      });
+      
       setActiveIndex(bestVisibleIndex);
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < container.scrollWidth - container.clientWidth - 10);
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < container.scrollWidth - container.clientWidth - 10);
+    });
   }, []);
 
   // Add to cart handler
@@ -114,15 +155,14 @@ const GlobalJourney = () => {
       }, 150);
     }
   };
-
   // View details handler
   const handleViewDetails = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
     e.stopPropagation();
+    // Set the selected product in the global state to trigger the ProductModal
     dispatch({ type: 'SET_SELECTED_PRODUCT', payload: product });
-    navigate(`/product/${product.id}`);
   };
-  
-  // Setup scroll event listener
+    // Setup scroll event listener
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -130,11 +170,25 @@ const GlobalJourney = () => {
     // Initial state
     handleScroll();
 
-    // Add scroll listener
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    // Create a more efficient scroll handler with debounce
+    let scrollTimeout: number | null = null;
+    const debouncedScrollHandler = () => {
+      if (scrollTimeout) {
+        window.cancelAnimationFrame(scrollTimeout);
+      }
+      scrollTimeout = window.requestAnimationFrame(() => {
+        handleScroll();
+      });
+    };
+
+    // Add scroll listener with passive flag for better performance
+    container.addEventListener('scroll', debouncedScrollHandler, { passive: true });
 
     return () => {
-      container.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        window.cancelAnimationFrame(scrollTimeout);
+      }
+      container.removeEventListener('scroll', debouncedScrollHandler);
     };
   }, [handleScroll]);
 
@@ -229,11 +283,27 @@ const GlobalJourney = () => {
             aria-label="View previous products"
           >
             <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
-          </button>
-          
-          <div
+          </button>          <div
             ref={scrollRef}
-            className="horizontal-scroll"
+            className="horizontal-scroll will-change-transform"
+            style={{
+              transform: 'translateZ(0)',
+              WebkitOverflowScrolling: 'touch',
+              WebkitTransform: 'translate3d(0,0,0)',
+              touchAction: 'pan-x'
+            }}
+            onTouchStart={() => {
+              // Mark as being touched to optimize performance during touch
+              if (scrollRef.current) {
+                scrollRef.current.style.pointerEvents = 'auto';
+              }
+            }}
+            onTouchEnd={() => {
+              // Restore normal pointer events
+              if (scrollRef.current) {
+                scrollRef.current.style.pointerEvents = '';
+              }
+            }}
             onMouseDown={(e) => {
               // Only if click is directly on the scroll container (not a child)
               if (e.currentTarget === e.target) {
@@ -256,27 +326,42 @@ const GlobalJourney = () => {
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product, index) => (                <div
                   key={product.id}
-                  className={`scroll-item ${activeIndex === index ? 'active-product' : ''}`}
-                >
-                  <div className="product-card h-full" onClick={() => navigate(`/product/${product.id}`)}>
-                    {/* Product Image with Gradient Overlay */}
-                    <div className="relative h-64 overflow-hidden rounded-t-lg">
-                      <img
+                  className={`scroll-item will-change-transform ${activeIndex === index ? 'active-product' : ''}`}
+                  style={{
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    WebkitTransform: 'translate3d(0,0,0)',
+                    WebkitBackfaceVisibility: 'hidden',
+                    touchAction: 'manipulation'
+                  }}
+                ><div 
+                    className="product-card h-full" 
+                    onClick={(e) => {
+                      // Only navigate if the click wasn't on a button or interactive element
+                      const target = e.target as HTMLElement;
+                      const isButton = target.closest('button');
+                      if (!isButton) {
+                        navigate(`/shop`);
+                      }
+                    }}
+                  >{/* Product Image with Transparent Background */}
+                    <div className="relative h-64 overflow-hidden rounded-t-lg bg-transparent">                      <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-110 shadow-inner"
+                        className="w-full h-full object-contain transition-transform duration-700 hover:scale-105 will-change-transform"
                         loading="lazy"
+                        decoding="async"
+                        style={{ 
+                          transform: 'translateZ(0)',
+                          willChange: 'transform' 
+                        }}
                         onError={(e) => {
                           // Fallback for image errors
                           const target = e.target as HTMLImageElement;
                           target.src = '/placeholder.svg';
-                        }}
-                      />
-                      {/* Add gradient overlay for better text visibility */}
-                      <div className="product-image-overlay"></div>
-
-                      {/* Badges */}
-                      <div className="absolute top-4 left-4 flex flex-col gap-1.5">
+                        }}/>
+                      <div className="product-image-overlay"></div>{/* Badges */}
+                      <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
                         {product.isNew && (
                           <Badge className="bg-green-500 text-white border-0 text-xs font-medium px-2.5 py-0.5 shadow-sm">
                             NEW
@@ -291,31 +376,24 @@ const GlobalJourney = () => {
                           <Badge className="bg-red-500 text-white border-0 text-xs font-medium px-2.5 py-0.5 shadow-sm">
                             OUT OF STOCK
                           </Badge>
-                        )}
-                      </div>
-
-                      {/* Quick Actions */}
-                      <div className="absolute top-4 right-4">
+                        )}                      </div>                      {/* Quick Actions */}
+                      <div className="absolute top-4 right-4 z-30">
                         <Button
                           size="sm"
                           variant="secondary"
-                          className="h-9 w-9 p-0 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-md"
+                          className="h-9 w-9 p-0 rounded-full bg-white/90 backdrop-blur-sm hover:bg-blue-50 hover:text-blue-600 shadow-md transform transition-transform hover:scale-110"
                           onClick={(e) => handleViewDetails(e, product)}
+                          onMouseDown={(e) => e.stopPropagation()}
                           aria-label={`View details for ${product.name}`}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
-                      </div>
-                      
-                      {/* Brand Badge */}
+                      </div>                      {/* Brand Badge */}
                       {product.brand && (
-                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium text-gray-800 shadow-sm">
+                        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium text-gray-800 shadow-sm z-10">
                           {product.brand}
                         </div>
                       )}
-                      
-                      {/* Elegant Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/5 opacity-0 hover:opacity-100 transition-opacity duration-300" />
                     </div>
                     
                     {/* Product Content */}
@@ -528,10 +606,12 @@ const GlobalJourney = () => {
           </div>          <div className="text-center mt-8 md:mt-12">
             <blockquote className="text-base md:text-lg font-medium text-gray-600 italic">
               "Every space deserves the perfect finish"
-            </blockquote>
-          </div>
+            </blockquote>          </div>
         </div>
       </div>
+      
+      {/* Product Modal */}
+      <ProductModal />
     </section>
   );
 };

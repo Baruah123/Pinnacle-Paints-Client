@@ -31,18 +31,21 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, isOpen, 
   const handleDownloadSpecs = () => {
     // TODO: Implement PDF download functionality
     console.log('Download specs for:', product.name);
-  };
-
-  return (
+  };  return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto product-modal-content" hideCloseButton>
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-playfair text-charcoal">
               {product.name}
-            </DialogTitle>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="h-4 w-4" />
+            </DialogTitle>            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={onClose} 
+              className="z-[160] hover:bg-gray-100 rounded-full h-8 w-8 p-0 flex items-center justify-center"
+              aria-label="Close product details"
+            >
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </DialogHeader>

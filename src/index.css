@@ -490,6 +490,11 @@ body {
   padding-right: 20px;
   transition: all 0.3s ease;
   cursor: grab;
+  touch-action: pan-x;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 @media (max-width: 768px) {
@@ -498,6 +503,14 @@ body {
     padding-left: 10px; /* Less padding on mobile */
     padding-right: 10px;
     scroll-padding: 0 15px; /* Adjust for mobile */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    transform: translateZ(0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: scroll-position;
   }
 }
 
@@ -538,13 +551,13 @@ body {
   pointer-events: auto;
   overscroll-behavior-y: auto;
   overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;  
   border-radius: 1.25rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
+  background: transparent;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -552,11 +565,17 @@ body {
   transform: translateZ(0);
   -webkit-font-smoothing: subpixel-antialiased;
   aspect-ratio: 3/5; /* Maintain consistent aspect ratio */
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  will-change: transform, box-shadow;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1.0, 1.0);
+  transform: translateZ(0) scale(1.0, 1.0);
 }
 
 .product-card:hover {
   transform: translateY(-7px);
-  box-shadow: 0 20px 45px rgba(0,0,0,0.15), 0 5px 20px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.09), 0 5px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* New CSS classes for equal height product content areas */
@@ -565,7 +584,10 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
-  height: calc(580px - 16rem); /* Fixed content height: card height minus image height */
+  background-color: transparent;
+  min-height: 200px; /* Minimum height for content area */
+  position: relative;
+  z-index: 5;
 }
 
 .product-info {
@@ -592,6 +614,32 @@ body {
   width: 280px; /* Fixed width for consistency */
   max-height: 580px; /* Enforce maximum height */
   min-height: 580px; /* Enforce minimum height */
+  transition: transform 0.3s ease-out;
+}
+
+.active-product {
+  transform: translateY(-5px);
+}
+
+.active-product .product-card {
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.12), 0 8px 16px rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Brand badge with subtle glow effect */
+.product-card .absolute.bottom-4 {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Make sure images with transparent backgrounds look good */
+.product-card img[alt] {
+  padding: 1rem;
+  transition: all 0.4s ease;
+}
+
+.product-card:hover img[alt] {
+  transform: translateY(-5px) scale(1.05);
 }
 
 /* Touch-optimized wrapper for better mobile scroll */
@@ -694,18 +742,17 @@ body {
   .product-nav-arrow.right {
     right: 5px;
   }
-    /* Enhanced product images for mobile */
+  /* Enhanced product images for mobile */
   .product-card img {
-    object-fit: cover;
+    object-fit: contain;
     transform: scale(1.02); /* Slight zoom for better visual impact */
-    filter: contrast(1.05) saturate(1.08) brightness(1.02); /* Enhance colors */
     transition: all 0.7s ease;
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.1);
+    background: transparent;
   }
   
   .product-card:active img {
     transform: scale(1.08);
-    filter: contrast(1.08) saturate(1.12) brightness(1.03);
+    background: transparent;
   }
   
   /* Product image overlay for better text visibility */
@@ -720,6 +767,34 @@ body {
     transition: opacity 0.3s ease;
     z-index: 1;
   }
+}
+
+/* Enhanced Product Card Eye Icon Styles */
+.product-card .product-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Ensure the Eye button has appropriate z-index */
+.product-card button[aria-label*="View details"] {
+  z-index: 30 !important;
+  position: relative;
+}
+
+/* Make sure the product card isn't blocking the modal */
+.product-card {
+  z-index: 1;
+  position: relative;
+}
+
+/* Add some nice hover effects for the eye button */
+.product-card button[aria-label*="View details"]:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #4338ca; /* Indigo-700 */
 }
 
 .touch-scroll-wrapper::-webkit-scrollbar {
@@ -1057,5 +1132,192 @@ body {
   .active-product {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Ensure interactive elements within product cards work properly */
+.product-card button,
+.product-card a {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+/* Improve touch target size for buttons */
+.product-card .absolute button {
+  position: relative;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.15s ease;
+}
+
+.product-card .absolute button:active {
+  transform: scale(0.92);
+}
+
+/* Custom Dialog Z-Index to ensure it displays above navbar */
+.product-modal-overlay {
+  z-index: 150 !important; /* Higher than navbar's z-index of 100 */
+}
+
+.product-modal-content {
+  z-index: 150 !important; /* Higher than navbar's z-index of 100 */
+}
+
+/* Custom Dialog Animation for Product Modal */
+.product-modal-content {
+  animation: fadeIn 0.3s ease-out;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 8px 24px -2px rgba(0, 0, 0, 0.15) !important;
+  border-width: 1px !important;
+  border-color: rgba(212, 175, 55, 0.2) !important; /* Gold with opacity */
+  backdrop-filter: blur(12px);
+}
+
+/* Enhanced Close Button Styles for Product Modal */
+.product-modal-content .flex button[aria-label="Close product details"] {
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.product-modal-content .flex button[aria-label="Close product details"]:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Enhanced product image container styling */
+.product-card .relative.h-64 {
+  background-color: transparent; /* Transparent background for product images */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: none;
+}
+
+/* Product image styling */
+.product-card .relative.h-64 img {
+  mix-blend-mode: normal; /* Normal blend mode for transparent background */
+  object-fit: contain;
+  max-height: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+  display: block;
+  position: relative;
+  z-index: 5;
+  padding: 0.75rem;
+}
+
+/* Ensure consistent product image display */
+.product-card .relative.h-64::after {
+  content: none; /* Remove the gradient effect */
+}
+
+/* Hover effects for product card images */
+.product-card:hover .relative.h-64 img {
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+}
+
+/* Product image container transparent background */
+.product-card .relative.h-64 {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+/* Mobile scrolling performance optimizations */
+@media (max-width: 768px) {
+  .horizontal-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding: 0 20px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    transform: translateZ(0);
+    will-change: scroll-position;
+    padding: 8px 20px 20px 20px;
+    gap: 12px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+  }
+  
+  .horizontal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+    .scroll-item {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    flex: 0 0 auto;
+    width: 90vw;
+    max-width: 320px;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    transition: all 0.2s ease-out;
+    margin: 0 auto;
+    touch-action: manipulation;
+  }
+}
+
+/* Custom CSS class to temporarily disable scroll snapping during programmatic scrolling */
+.scrolling-programmatically {
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Improve touch scrolling physics */
+.horizontal-scroll {
+  -ms-scroll-chaining: none;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Remove pointer delay on mobile devices */
+@media (max-width: 768px) {
+  .horizontal-scroll * {
+    touch-action: manipulation;
+  }
+  
+  /* Prevent content jumping during scroll */
+  .scroll-item, .product-card {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+  }
+  
+  /* Optimize image rendering during scroll */
+  .product-card img {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }
