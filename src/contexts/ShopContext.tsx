@@ -103,13 +103,14 @@ const mockProducts: Product[] = [
     ],
     certifications: ['ISO 9001', 'GREENGUARD'],
     usageInstructions: 'Apply with brush or roller in thin, even coats. Allow proper drying time between coats.'
-  },
-  {
+  },  {
     id: '2',
     name: 'Venetian Plaster Gold',
+    sku: 'DCP-VP-GL-002',
     price: 156.99,
     description: 'Luxurious decorative finish that creates depth and elegance on walls.',
     category: 'Decorative Paints',
+    brand: 'Diamond Collection',
     image: '/products/Bead 50 - 100, 32 oz.png',
     inStock: true,
     isEcoFriendly: false,
@@ -120,13 +121,14 @@ const mockProducts: Product[] = [
     features: ['Venetian Style', 'Gold Accent', 'Textured Finish'],
     coverage: '8-10 sq m per litre',
     finish: 'Textured'
-  },
-  {
+  },  {
     id: '3',
     name: 'Decorative Chalk Paint',
+    sku: 'DCP-CP-MAT-003',
     price: 78.50,
     description: 'Matte decorative paint perfect for furniture and accent pieces.',
     category: 'Decorative Paints',
+    brand: 'Diamond Collection',
     image: '/products/TSE Part B - EZ, Half Gal.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -136,16 +138,17 @@ const mockProducts: Product[] = [
     reviews: 156,
     features: ['Chalk Finish', 'Easy Distressing', 'Low VOC'],
     coverage: '10-12 sq m per litre',
-    finish: 'Matte'
-  },
+    finish: 'Matte'  },
 
   // Eco-Friendly Paints
   {
     id: '4',
     name: 'Zero VOC Interior Paint',
+    sku: 'ECO-VOC-ZR-004',
     price: 94.99,
     description: 'Completely non-toxic paint safe for children and pets with excellent coverage.',
     category: 'Eco-Friendly Paints',
+    brand: 'Eco Plus',
     image: '/products/Acrylic Sealer WB Accent, 5 Gal copy.png',
     inStock: true,
     isEcoFriendly: true,
@@ -160,9 +163,11 @@ const mockProducts: Product[] = [
   {
     id: '5',
     name: 'Natural Clay Paint',
+    sku: 'ECO-CL-NT-005',
     price: 67.99,
     description: 'Made from natural clay minerals, breathable and environmentally friendly.',
     category: 'Eco-Friendly Paints',
+    brand: 'Eco Plus',
     image: '/products/Polyaspartic 72 Part A EZ Clear 1 gal.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -177,9 +182,11 @@ const mockProducts: Product[] = [
   {
     id: '6',
     name: 'Organic Milk Paint',
+    sku: 'ECO-MP-ORG-006',
     price: 45.99,
     description: 'Traditional milk-based paint made from organic ingredients.',
     category: 'Eco-Friendly Paints',
+    brand: 'Eco Plus',
     image: '/products/Epoxy Patch Part B FC 1 gal.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -191,14 +198,15 @@ const mockProducts: Product[] = [
     coverage: '8-10 sq m per litre',
     finish: 'Flat'
   },
-
   // Industrial Solutions
   {
     id: '7',
     name: 'Heavy Duty Epoxy Coating',
+    sku: 'IND-EP-HD-007',
     price: 189.99,
     description: 'Industrial-grade epoxy coating for high-traffic areas and harsh environments.',
     category: 'Industrial Solutions',
+    brand: 'IndustraPro',
     image: '/products/Metallic Pigment 8oz Black.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -209,13 +217,14 @@ const mockProducts: Product[] = [
     features: ['Chemical Resistant', 'High Durability', 'Anti-Slip'],
     coverage: '6-8 sq m per litre',
     finish: 'High Gloss'
-  },
-  {
+  },  {
     id: '8',
     name: 'Anti-Corrosion Primer',
+    sku: 'IND-PR-AC-008',
     price: 134.50,
     description: 'Specialized primer for metal surfaces in industrial applications.',
     category: 'Industrial Solutions',
+    brand: 'IndustraPro',
     image: '/products/Bead 50 - 100, 32 oz.png',
     inStock: true,
     isEcoFriendly: false,
@@ -226,13 +235,14 @@ const mockProducts: Product[] = [
     features: ['Rust Prevention', 'Metal Adhesion', 'Long Lasting'],
     coverage: '8-10 sq m per litre',
     finish: 'Primer'
-  },
-  {
+  },  {
     id: '9',
     name: 'Chemical Resistant Coating',
+    sku: 'IND-CR-CT-009',
     price: 245.99,
     description: 'Ultimate protection against chemicals and extreme conditions.',
     category: 'Industrial Solutions',
+    brand: 'IndustraPro',
     image: '/products/TSE Part B - EZ, Half Gal.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -249,9 +259,11 @@ const mockProducts: Product[] = [
   {
     id: '10',
     name: 'Premera Garage Floor Epoxy',
+    sku: 'PRE-GFE-010',
     price: 167.99,
     description: 'Professional-grade garage floor coating with superior adhesion and durability.',
     category: 'Premera Floor Coatings',
+    brand: 'Premera',
     image: '/products/Acrylic Sealer WB Accent, 5 Gal copy.png',
     inStock: true,
     isEcoFriendly: false,
@@ -262,13 +274,14 @@ const mockProducts: Product[] = [
     features: ['Garage Grade', 'Oil Resistant', 'Easy Clean'],
     coverage: '7-9 sq m per litre',
     finish: 'High Gloss'
-  },
-  {
+  },  {
     id: '11',
     name: 'Premera Basement Floor Sealer',
+    sku: 'PRE-BFS-011',
     price: 123.50,
     description: 'Moisture-resistant basement floor coating that prevents water damage.',
     category: 'Premera Floor Coatings',
+    brand: 'Premera',
     image: '/products/Polyaspartic 72 Part A EZ Clear 1 gal.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -279,13 +292,14 @@ const mockProducts: Product[] = [
     features: ['Moisture Barrier', 'Crack Resistant', 'Long Lasting'],
     coverage: '9-11 sq m per litre',
     finish: 'Semi-Gloss'
-  },
-  {
+  },  {
     id: '12',
     name: 'Premera Commercial Floor Coating',
+    sku: 'PRE-CFC-012',
     price: 289.99,
     description: 'Heavy-duty commercial floor coating for high-traffic areas.',
     category: 'Premera Floor Coatings',
+    brand: 'Premera',
     image: '/products/Epoxy Patch Part B FC 1 gal.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -302,9 +316,11 @@ const mockProducts: Product[] = [
   {
     id: '13',
     name: 'Endurable Polyaspartic Floor Coating',
+    sku: 'END-PFC-013',
     price: 198.99,
     description: 'Fast-curing polyaspartic coating with exceptional durability and UV resistance.',
     category: 'Endurable Floor Coatings',
+    brand: 'Endurable',
     image: '/products/Metallic Pigment 8oz Black.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -315,13 +331,14 @@ const mockProducts: Product[] = [
     features: ['Fast Cure', 'UV Resistant', 'Crystal Clear'],
     coverage: '8-10 sq m per litre',
     finish: 'High Gloss'
-  },
-  {
+  },  {
     id: '14',
     name: 'Endurable Concrete Stain',
+    sku: 'END-CS-014',
     price: 87.50,
     description: 'Penetrating concrete stain that enhances and protects concrete surfaces.',
     category: 'Endurable Floor Coatings',
+    brand: 'Endurable',
     image: '/products/Bead 50 - 100, 32 oz.png',
     inStock: true,
     isEcoFriendly: true,
@@ -332,13 +349,14 @@ const mockProducts: Product[] = [
     features: ['Penetrating Stain', 'Natural Look', 'Long Lasting'],
     coverage: '12-15 sq m per litre',
     finish: 'Natural'
-  },
-  {
+  },  {
     id: '15',
     name: 'Endurable Metallic Epoxy',
+    sku: 'END-ME-015',
     price: 234.99,
     description: 'Stunning metallic epoxy floor coating with unique visual effects.',
     category: 'Endurable Floor Coatings',
+    brand: 'Endurable',
     image: '/products/TSE Part B - EZ, Half Gal.jpg',
     inStock: false,
     isEcoFriendly: false,
@@ -379,13 +397,14 @@ const mockProducts: Product[] = [
     ],
     certifications: ['GREENGUARD Gold'],
     usageInstructions: 'Clean surface thoroughly. Apply thin, even coat. No sanding required on most surfaces.'
-  },
-  {
+  },  {
     id: '17',
     name: 'Rustoleum Rust Reformer',
+    sku: 'RST-RR-017',
     price: 38.50,
     description: 'Converts rust to a protective coating, stopping rust in its tracks.',
     category: 'Rustoleum',
+    brand: 'Rustoleum',
     image: '/products/Polyaspartic 72 Part A EZ Clear 1 gal.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -396,13 +415,14 @@ const mockProducts: Product[] = [
     features: ['Rust Converter', 'Protective Coating', 'Easy Application'],
     coverage: '8-10 sq m per litre',
     finish: 'Protective'
-  },
-  {
+  },  {
     id: '18',
     name: 'Rustoleum Hammered Metal Paint',
+    sku: 'RST-HMP-018',
     price: 52.99,
     description: 'Distinctive hammered metal finish that hides surface imperfections.',
     category: 'Rustoleum',
+    brand: 'Rustoleum',
     image: '/products/Epoxy Patch Part B FC 1 gal.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -419,9 +439,11 @@ const mockProducts: Product[] = [
   {
     id: '19',
     name: 'Zinsser Bulls Eye 1-2-3 Primer',
+    sku: 'ZIN-BE-019',
     price: 67.99,
     description: 'Water-base primer-sealer-stain blocker that bonds to all surfaces.',
     category: 'Zinsser',
+    brand: 'Zinsser',
     image: '/products/Metallic Pigment 8oz Black.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -432,13 +454,14 @@ const mockProducts: Product[] = [
     features: ['Stain Blocker', 'All Surface', 'Water Base'],
     coverage: '11-13 sq m per litre',
     finish: 'Primer'
-  },
-  {
+  },  {
     id: '20',
     name: 'Zinsser BIN Primer',
+    sku: 'ZIN-BP-020',
     price: 89.50,
     description: 'Shellac-base primer that seals, primes and blocks stains on all surfaces.',
     category: 'Zinsser',
+    brand: 'Zinsser',
     image: '/products/Bead 50 - 100, 32 oz.png',
     inStock: true,
     isEcoFriendly: false,
@@ -449,13 +472,14 @@ const mockProducts: Product[] = [
     features: ['Shellac Base', 'Superior Adhesion', 'Stain Blocking'],
     coverage: '9-11 sq m per litre',
     finish: 'Primer'
-  },
-  {
+  },  {
     id: '21',
     name: 'Zinsser Perma-White Mold Paint',
+    sku: 'ZIN-PWM-021',
     price: 78.99,
     description: 'Self-priming paint that prevents mold and mildew growth.',
     category: 'Zinsser',
+    brand: 'Zinsser',
     image: '/products/TSE Part B - EZ, Half Gal.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -472,9 +496,11 @@ const mockProducts: Product[] = [
   {
     id: '22',
     name: 'International Marine Antifouling',
+    sku: 'INT-MA-022',
     price: 156.99,
     description: 'Professional marine antifouling paint for boat hulls and underwater surfaces.',
     category: 'International Paints',
+    brand: 'International',
     image: '/products/Acrylic Sealer WB Accent, 5 Gal copy.png',
     inStock: true,
     isEcoFriendly: false,
@@ -485,13 +511,14 @@ const mockProducts: Product[] = [
     features: ['Marine Grade', 'Antifouling', 'Long Lasting'],
     coverage: '7-9 sq m per litre',
     finish: 'Marine'
-  },
-  {
+  },  {
     id: '23',
     name: 'International Yacht Varnish',
+    sku: 'INT-YV-023',
     price: 134.50,
     description: 'Premium yacht varnish with UV protection for marine wood surfaces.',
     category: 'International Paints',
+    brand: 'International',
     image: '/products/Polyaspartic 72 Part A EZ Clear 1 gal.jpg',
     inStock: true,
     isEcoFriendly: false,
@@ -502,13 +529,14 @@ const mockProducts: Product[] = [
     features: ['UV Protection', 'Marine Wood', 'High Gloss'],
     coverage: '8-10 sq m per litre',
     finish: 'High Gloss'
-  },
-  {
+  },  {
     id: '24',
     name: 'International Toplac Enamel',
+    sku: 'INT-TE-024',
     price: 98.99,
     description: 'Single-pack polyurethane enamel for marine and industrial use.',
     category: 'International Paints',
+    brand: 'International',
     image: '/products/Epoxy Patch Part B FC 1 gal.jpg',
     inStock: false,
     isEcoFriendly: false,
@@ -525,9 +553,11 @@ const mockProducts: Product[] = [
   {
     id: '25',
     name: 'Devoe Wonder-Tones Interior',
+    sku: 'DVE-WTI-025',
     price: 89.99,
     description: 'Premium interior paint with exceptional color retention and coverage.',
     category: 'Devoe Coatings',
+    brand: 'Devoe',
     image: '/products/Metallic Pigment 8oz Black.jpg',
     inStock: true,
     isEcoFriendly: true,
@@ -538,13 +568,14 @@ const mockProducts: Product[] = [
     features: ['Color Retention', 'Premium Quality', 'Easy Clean'],
     coverage: '11-13 sq m per litre',
     finish: 'Eggshell'
-  },
-  {
+  },  {
     id: '26',
     name: 'Devoe Bar-Rust Primer',
+    sku: 'DVE-BRP-026',
     price: 67.50,
     description: 'High-performance anti-corrosive primer for metal surfaces.',
     category: 'Devoe Coatings',
+    brand: 'Devoe',
     image: '/products/Bead 50 - 100, 32 oz.png',
     inStock: true,
     isEcoFriendly: false,
@@ -555,13 +586,14 @@ const mockProducts: Product[] = [
     features: ['Anti-Corrosive', 'Metal Primer', 'Industrial Grade'],
     coverage: '8-10 sq m per litre',
     finish: 'Primer'
-  },
-  {
+  },  {
     id: '27',
     name: 'Devoe Miracle Gloss Enamel',
+    sku: 'DVE-MGE-027',
     price: 112.99,
     description: 'High-gloss enamel paint with superior durability and finish quality.',
     category: 'Devoe Coatings',
+    brand: 'Devoe',
     image: '/products/TSE Part B - EZ, Half Gal.jpg',
     inStock: true,
     isEcoFriendly: false,

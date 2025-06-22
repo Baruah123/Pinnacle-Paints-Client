@@ -124,6 +124,17 @@ const WorldMap = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
+  const resetMapView = () => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setView([20, 0], 2);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+    resetMapView();
+  };
+
   useEffect(() => {
     const loadLeaflet = async () => {
       if (typeof window !== 'undefined' && mapRef.current && !mapInstanceRef.current) {
@@ -254,8 +265,7 @@ const WorldMap = () => {
     };
   }, []); // Remove projects dependency to prevent re-initialization
 
-  return (
-    <div className="relative">
+  return (    <div className="relative z-10 hidden md:block">
       {/* World Map Container */}
       <div className="relative w-full h-96 bg-graphene/30 rounded-lg overflow-hidden border border-gold/20">
         <div 
@@ -263,26 +273,22 @@ const WorldMap = () => {
           className="w-full h-full rounded-lg"
           style={{ background: '#2d2d2d' }}
         />
-        
-        {!mapLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-graphene/50">
+            {!mapLoaded && (
+          <div className="absolute inset-0 hidden md:flex items-center justify-center bg-graphene/50">
             <div className="text-ivory/60">Loading interactive map...</div>
           </div>
         )}
-      </div>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <div className="fixed inset-0 bg-charcoal/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-          <div className="bg-ivory text-charcoal rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+      </div>      {/* Project Modal */}
+      {selectedProject && (        <div className="fixed inset-0 bg-charcoal/80 backdrop-blur-sm z-[999] flex items-center justify-center p-4" style={{ position: 'fixed', top: 0, left: 0 }}>
+          <div className="bg-ivory text-charcoal rounded-lg w-[90%] max-w-lg transform transition-all duration-300 max-h-[70vh] overflow-y-auto relative z-[1000]">
             <div className="relative">
               <img
                 src={selectedProject.image}
                 alt={selectedProject.name}
-                className="w-full h-64 object-cover rounded-t-lg"
+                className="w-full h-48 object-cover rounded-t-lg"
               />
               <button
-                onClick={() => setSelectedProject(null)}
+                onClick={handleCloseModal}
                 className="absolute top-4 right-4 bg-charcoal/80 text-ivory rounded-full p-2 hover:bg-charcoal transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -315,7 +321,7 @@ const WorldMap = () => {
               
               <div className="mt-6 pt-4 border-t border-charcoal/20">
                 <Button 
-                  onClick={() => setSelectedProject(null)}
+                  onClick={handleCloseModal}
                   className="bg-charcoal hover:bg-charcoal/90 text-ivory"
                 >
                   Close Project Details
