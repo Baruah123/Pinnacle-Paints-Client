@@ -215,7 +215,7 @@ const CheckoutSuccess = () => {
                 
                 <div className="space-y-2 text-sm">
                   <p className="text-graphene">
-                    <strong>Free shipping</strong> on orders over £100
+                    <strong>Free shipping</strong> on orders over $100
                   </p>
                   <p className="text-graphene">
                     Standard delivery: 3-5 business days

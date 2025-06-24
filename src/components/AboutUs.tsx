@@ -4,6 +4,7 @@ import { Play, Pause } from 'lucide-react';
 
 const AboutUs = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const isMobile = useIsMobile();
@@ -19,6 +20,7 @@ const AboutUs = () => {
     }
   };
 
+  // Handle video element events
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -37,9 +39,51 @@ const AboutUs = () => {
       };
     }
   }, []);
+  // Set up Intersection Observer to autoplay video when in viewport
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    
+    if (!video || !section) return;
+    
+    const playVideoIfVisible = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      
+      // If section is visible (more than 40% visible)
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+        // Only auto-play if video is loaded and not already playing
+        if (isVideoLoaded && !isPlaying) {
+          video.play()
+            .then(() => setIsPlaying(true))
+            .catch(err => console.log('Auto-play prevented:', err));
+        }
+      } else {
+        // If section is not visible enough, pause the video
+        if (isPlaying) {
+          video.pause();
+          setIsPlaying(false);
+        }
+      }
+    };
+    
+    const observer = new IntersectionObserver(playVideoIfVisible, {
+      root: null, // viewport
+      rootMargin: '0px',
+      threshold: [0.2, 0.4, 0.6, 0.8] // observe at different visibility thresholds
+    });
+    
+    observer.observe(section);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, [isPlaying, isVideoLoaded]);
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-ivory to-white overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-ivory to-white overflow-hidden"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -53,31 +97,26 @@ const AboutUs = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
             {/* Video Section */}
             <div className="relative order-2 lg:order-1">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-charcoal/10">
-                <video
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-charcoal/10">                <video
                   ref={videoRef}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover"
-                  poster="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800"
+                  poster="https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_800/v1750791419/video-poster_wd9whu.jpg"
                   preload="metadata"
                   playsInline
                   muted
+                  loop
                 >
-                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                  <source src="https://res.cloudinary.com/dxs9msbqj/video/upload/v1750791419/2887457-hd_1920_1080_25fps_hmzvoi.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-                
-                {/* Video Controls Overlay */}
+                  {/* Video Controls Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button
                     onClick={toggleVideo}
-                    className="group bg-charcoal/80 hover:bg-charcoal/90 text-ivory rounded-full p-4 sm:p-6 transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+                    className={`group bg-charcoal/80 hover:bg-charcoal/90 text-ivory rounded-full p-4 sm:p-6 transition-all duration-300 hover:scale-110 backdrop-blur-sm ${isPlaying ? 'opacity-0 hover:opacity-80' : 'opacity-80'}`}
                     aria-label={isPlaying ? 'Pause video' : 'Play video'}
                   >
-                    {isPlaying ? (
-                      <Pause className="w-6 h-6 sm:w-8 sm:h-8" />
-                    ) : (
-                      <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" />
-                    )}
+                    <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" />
                   </button>
                 </div>
 

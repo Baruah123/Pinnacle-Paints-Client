@@ -72,26 +72,7 @@ const IndustrialCTA = () => {
       </div>
 
       {/* Main CTA Buttons */}
-      <div className="text-center space-y-6">
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button 
-            size="lg"
-            className="bg-gold hover:bg-gold/90 text-charcoal font-medium px-8 py-4 text-lg shine-effect group"
-          >
-            Explore All Coatings
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button 
-            size="lg"
-            variant="outline"
-            className="border-gold text-gold hover:bg-gold hover:text-charcoal px-8 py-4 text-lg group"
-            onClick={() => window.open('https://www.jotun.com', '_blank')}
-          >
-            Visit Jotun
-            <ExternalLink className="ml-2 w-5 h-5 group-hover:scale-110 transition-transform" />
-          </Button>
-        </div>
-      </div>
+     
     </div>
   );
 };

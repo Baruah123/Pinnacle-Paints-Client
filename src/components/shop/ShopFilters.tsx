@@ -101,10 +101,9 @@ const ShopFilters = () => {
         <CardHeader className="pb-3">
           <CardTitle className="text-charcoal font-playfair text-lg">Sort By</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Select
+        <CardContent>          <Select
             value={state.sorting}
-            onValueChange={(value: any) => dispatch({ type: 'SET_SORTING', payload: value })}
+            onValueChange={(value: 'price-low' | 'price-high' | 'newest' | 'popular' | 'rating') => dispatch({ type: 'SET_SORTING', payload: value })}
           >
             <SelectTrigger className="w-full">
               <SelectValue />
@@ -208,8 +207,8 @@ const ShopFilters = () => {
               className="w-full"
             />
             <div className="flex justify-between text-sm text-graphene">
-              <span>£{state.filters.priceRange[0]}</span>
-              <span>£{state.filters.priceRange[1]}</span>
+              <span>${state.filters.priceRange[0]}</span>
+              <span>${state.filters.priceRange[1]}</span>
             </div>
           </div>
         </CardContent>

@@ -191,15 +191,11 @@ const GlobalJourney = () => {
       container.removeEventListener('scroll', debouncedScrollHandler);
     };
   }, [handleScroll]);
-
   // Handle wheel events to ensure page scrolling works when over products
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // If it's a vertical scroll and we're over a product card, allow the page to scroll
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        // Let the natural scroll behavior happen (don't prevent default)
-        return true;
-      }
+      // Always allow vertical scrolling, regardless of where the cursor is
+      return true;
     };
 
     const container = scrollRef.current;
@@ -285,12 +281,11 @@ const GlobalJourney = () => {
             <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
           </button>          <div
             ref={scrollRef}
-            className="horizontal-scroll will-change-transform"
-            style={{
+            className="horizontal-scroll will-change-transform"            style={{
               transform: 'translateZ(0)',
               WebkitOverflowScrolling: 'touch',
               WebkitTransform: 'translate3d(0,0,0)',
-              touchAction: 'pan-x'
+              touchAction: 'pan-y' // Changed to allow vertical scrolling anywhere on the container
             }}
             onTouchStart={() => {
               // Mark as being touched to optimize performance during touch
@@ -304,46 +299,21 @@ const GlobalJourney = () => {
                 scrollRef.current.style.pointerEvents = '';
               }
             }}
-            onMouseDown={(e) => {
-              // Only if click is directly on the scroll container (not a child)
-              if (e.currentTarget === e.target) {
-                e.currentTarget.style.cursor = 'grabbing';
-              }
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.cursor = 'grab';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.cursor = 'grab';
-            }}
-            onClick={(e) => {
-              // Prevent click from interfering with vertical scrolling
-              if (e.target === e.currentTarget) {
-                e.stopPropagation();
-              }
-            }}
+            // Removed mouse drag handlers to improve scrolling
           >
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product, index) => (                <div
                   key={product.id}
-                  className={`scroll-item will-change-transform ${activeIndex === index ? 'active-product' : ''}`}
-                  style={{
+                  className={`scroll-item will-change-transform ${activeIndex === index ? 'active-product' : ''}`}                  style={{
                     transform: 'translateZ(0)',
                     backfaceVisibility: 'hidden',
                     WebkitTransform: 'translate3d(0,0,0)',
                     WebkitBackfaceVisibility: 'hidden',
-                    touchAction: 'manipulation'
+                    touchAction: 'pan-y' // Enable vertical scrolling
                   }}
                 ><div 
                     className="product-card h-full" 
-                    onClick={(e) => {
-                      // Only navigate if the click wasn't on a button or interactive element
-                      const target = e.target as HTMLElement;
-                      const isButton = target.closest('button');
-                      if (!isButton) {
-                        navigate(`/shop`);
-                      }
-                    }}
+                    // Removing onClick handler to fix scrolling issues
                   >{/* Product Image with Transparent Background */}
                     <div className="relative h-64 overflow-hidden rounded-t-lg bg-transparent">                      <img
                         src={product.image}
@@ -443,16 +413,15 @@ const GlobalJourney = () => {
                           </span>
                         ))}
                       </div>
-                      
-                      {/* Price & Add to Cart */}
+                        {/* Price & Add to Cart */}
                       <div className="flex items-center justify-between pt-4 mt-auto border-t border-gray-100 product-buttons">
                         <div className="flex flex-col">
                           <span className="text-xl font-bold text-gray-900">
-                            £{product.price.toFixed(2)}
+                            ${product.price.toFixed(2)}
                           </span>
                           {product.originalPrice && (
                             <span className="text-xs text-gray-500 line-through">
-                              £{product.originalPrice.toFixed(2)}
+                              ${product.originalPrice.toFixed(2)}
                             </span>
                           )}
                         </div>
@@ -466,6 +435,7 @@ const GlobalJourney = () => {
                               ? 'bg-blue-600 hover:bg-blue-700 text-white'
                               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                           } rounded-full px-4 transition-colors duration-200`}
+                          style={{ pointerEvents: 'auto' }} // Ensure button remains clickable
                         >
                           <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
                           {product.requestQuoteOnly ? 'Quote Only' : product.inStock ? 'Add' : 'Out of Stock'}

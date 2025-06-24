@@ -178,7 +178,7 @@ const OrderManagement = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-charcoal">£{order.total.toFixed(2)}</p>
+                      <p className="font-semibold text-charcoal">${order.total.toFixed(2)}</p>
                       <p className="text-xs text-graphene/70">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
@@ -337,11 +337,11 @@ const OrderManagement = () => {
                             {item.product.name}
                           </p>
                           <p className="text-xs text-graphene/70">
-                            Qty: {item.quantity} × £{item.price.toFixed(2)}
+                            Qty: {item.quantity} × ${item.price.toFixed(2)}
                           </p>
                         </div>
                         <p className="text-sm font-medium text-charcoal">
-                          £{(item.quantity * item.price).toFixed(2)}
+                          ${(item.quantity * item.price).toFixed(2)}
                         </p>
                       </div>
                     ))}
@@ -359,20 +359,20 @@ const OrderManagement = () => {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-graphene">Subtotal:</span>
-                      <span className="text-charcoal">£{selectedOrder.subtotal.toFixed(2)}</span>
+                      <span className="text-charcoal">${selectedOrder.subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-graphene">Shipping:</span>
-                      <span className="text-charcoal">£{selectedOrder.shipping.toFixed(2)}</span>
+                      <span className="text-charcoal">${selectedOrder.shipping.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-graphene">VAT:</span>
-                      <span className="text-charcoal">£{selectedOrder.tax.toFixed(2)}</span>
+                      <span className="text-charcoal">${selectedOrder.tax.toFixed(2)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-semibold">
                       <span className="text-charcoal">Total:</span>
-                      <span className="text-charcoal">£{selectedOrder.total.toFixed(2)}</span>
+                      <span className="text-charcoal">${selectedOrder.total.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>

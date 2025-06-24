@@ -82,7 +82,7 @@ const CartSidebar = () => {
                         {item.product.name}
                       </h3>
                       <p className="text-sm text-graphene/70 mt-1">
-                        £{item.product.price.toFixed(2)} each
+                        ${item.product.price.toFixed(2)} each
                       </p>
                       
                       {/* Quantity Controls */}
@@ -130,7 +130,7 @@ const CartSidebar = () => {
             <div className="border-t border-graphene/10 p-6 space-y-4">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span className="text-charcoal">Total:</span>
-                <span className="text-charcoal">£{totalPrice.toFixed(2)}</span>
+                <span className="text-charcoal">${totalPrice.toFixed(2)}</span>
               </div>
               
               <div className="space-y-3">

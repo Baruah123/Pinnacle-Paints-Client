@@ -46,7 +46,7 @@ const DashboardOverview = () => {
     },
     {
       title: 'Revenue',
-      value: `£${state.orders.reduce((total, order) => total + order.total, 0).toFixed(0)}`,
+      value: `$${state.orders.reduce((total, order) => total + order.total, 0).toFixed(0)}`,
       change: '-3%',
       trend: 'down',
       icon: DollarSign,

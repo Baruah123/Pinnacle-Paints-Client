@@ -46,31 +46,28 @@ const HomeCarousel: React.FC = () => {
       backgroundImage: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=2400&auto=format&fit=crop",
       route: "/vendors/diamond-collection",
       features: ["Premium Quality", "Professional Grade", "Proven Performance"]
-    },
-    {
+    },    {
       id: 3,
       category: "Industrial Coatings",
       heading: "Industrial Strength. Uncompromising Protection.",
       text: "Heavy-duty coatings including aerosols, primers, metal coatings, and specialty finishes for demanding applications.",
-      backgroundImage: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2400&auto=format&fit=crop",
+      backgroundImage: "https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_2000/v1750791405/pexels-hoang-nc-483165236-17572740_qbiqep.jpg",
       route: "/industrial-paints",
       features: ["Aerosols", "Primers", "Metal Coatings", "Specialty Finishes"]
-    },
-    {
+    },    {
       id: 4,
       category: "Wood Coatings",
       heading: "Transform Wood with Premium Finishes",
       text: "Minimalist elegance meets maximum durability. Professional wood treatments for lasting beauty.",
-      backgroundImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2400&auto=format&fit=crop",
+      backgroundImage: "https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_2000/v1750791403/Polyurethane_cz4odx.webp",
       route: "/wood-finishes",
       features: ["Durability", "Multiple Finishes", "Professional Grade"]
-    },
-    {
+    },{
       id: 5,
       category: "Organic Paints",
       heading: "Organic Paints – Where Nature Meets Innovation",
       text: "Sustainable solutions featuring natural ingredients, eco-certifications, and earth-conscious formulations.",
-      backgroundImage: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2400&auto=format&fit=crop",
+      backgroundImage: "https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_2000/v1750791409/pexels-ivan-samkov-5799059_pfgzxs.jpg",
       route: "/organic-paints",
       features: ["Eco-Certified", "Natural Ingredients", "Zero VOC"]
     },
@@ -82,22 +79,20 @@ const HomeCarousel: React.FC = () => {
       backgroundImage: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2400&auto=format&fit=crop",
       route: "/commercial-residential",
       features: ["Cabots", "Minwax", "Valspar", "True Value"]
-    },
-    {
+    },    {
       id: 7,
       category: "Floor Coatings",
       heading: "Superior Floor Protection Systems",
       text: "Professional epoxy, polyurethane, and decorative flake systems for lasting floor protection.",
-      backgroundImage: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2400&auto=format&fit=crop",
+      backgroundImage: "https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_2000/v1750791404/shutterstock_2298085401_lrfuto.webp",
       route: "/floor-coatings",
       features: ["Epoxy Systems", "Polyurethane", "Decorative Flake"]
-    },
-    {
+    },{
       id: 8,
       category: "Spray Equipment",
       heading: "Professional Spray Equipment & Tools",
       text: "Complete range from Titan, Wagner, Diamond Collection, and Zip 52 for perfect application every time.",
-      backgroundImage: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2400&auto=format&fit=crop",
+      backgroundImage: "https://res.cloudinary.com/dxs9msbqj/image/upload/q_auto,f_auto,w_2000/v1750791406/pexels-matsheard-5657436_macreq.jpg",
       route: "/spray-equipment",
       features: ["Titan", "Wagner", "Diamond Collection", "Zip 52"]
     }

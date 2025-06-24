@@ -325,7 +325,7 @@ const ProductManagement = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-lg font-bold text-charcoal">£{product.price}</span>
+                    <span className="text-lg font-bold text-charcoal">${product.price}</span>
                     {product.requestQuoteOnly && (
                       <span className="text-xs text-blue-600">Quote Only</span>
                     )}

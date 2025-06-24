@@ -486,15 +486,16 @@ body {
   max-width: 100%;
   padding-bottom: 20px; /* Add space for box-shadow overflow */
   margin-bottom: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 20px;  padding-right: 20px;
   transition: all 0.3s ease;
-  cursor: grab;
-  touch-action: pan-x;
+  cursor: default;
+  touch-action: pan-x pan-y; /* Allow both horizontal and vertical scrolling */
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -webkit-transform: translate3d(0, 0, 0);
+  /* Improve scrolling behavior */
+  pointer-events: auto;
 }
 
 @media (max-width: 768px) {
@@ -514,8 +515,9 @@ body {
   }
 }
 
+/* Removed grabbing cursor */
 .horizontal-scroll:active {
-  cursor: grabbing;
+  cursor: default;
 }
 
 /* Add scroll behavior for nav arrows */
@@ -534,22 +536,22 @@ body {
   overscroll-behavior-y: auto;
   -webkit-user-select: none;
   user-select: none;
-  cursor: grab;
+  cursor: default;
   width: 100%;
   position: relative;
   padding: 8px 4px;
 }
 
-/* When actively scrolling, show grabbing cursor */
+/* No special cursor for scrolling anymore */
 .scroll-container:active {
-  cursor: grabbing;
+  cursor: default;
 }
 
 /* Enhanced product cards with smooth shadows and transitions */
 .product-card {
   touch-action: pan-y; /* Allow vertical scrolling */
-  pointer-events: auto;
-  overscroll-behavior-y: auto;
+  pointer-events: none; /* Disable click events on the card itself */
+  overscroll-behavior-y: contain; /* Improved vertical scrolling behavior */
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;  
   border-radius: 1.25rem;
@@ -571,6 +573,7 @@ body {
   backface-visibility: hidden;
   -webkit-transform: translateZ(0) scale(1.0, 1.0);
   transform: translateZ(0) scale(1.0, 1.0);
+  cursor: default; /* Ensures users understand it's not clickable */
 }
 
 .product-card:hover {
@@ -615,6 +618,7 @@ body {
   max-height: 580px; /* Enforce maximum height */
   min-height: 580px; /* Enforce minimum height */
   transition: transform 0.3s ease-out;
+  overscroll-behavior-y: contain; /* Improved vertical scrolling */
 }
 
 .active-product {
@@ -778,10 +782,11 @@ body {
   pointer-events: none;
 }
 
-/* Ensure the Eye button has appropriate z-index */
+/* Ensure the Eye button has appropriate z-index and clickability */
 .product-card button[aria-label*="View details"] {
   z-index: 30 !important;
   position: relative;
+  pointer-events: auto !important;
 }
 
 /* Make sure the product card isn't blocking the modal */
@@ -811,8 +816,7 @@ body {
     scroll-snap-type: x mandatory;
     scroll-padding: 0 25px; /* Increased padding for arrows */
     will-change: scroll-position;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;    backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
     -webkit-overflow-scrolling: touch;
     gap: 12px; /* Reduced gap to allow for arrow space */
@@ -821,11 +825,11 @@ body {
     overflow-y: visible;
     width: 100%;
     max-width: 100%;
-    cursor: grab;
+    cursor: default;
   }
   
   .horizontal-scroll:active {
-    cursor: grabbing;
+    cursor: default;
   }
 
   .scroll-item {
@@ -1320,4 +1324,35 @@ body {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
+}
+
+/* Make sure interactive elements inside product cards remain clickable */
+.product-card button,
+.product-card a,
+.product-card .product-buttons,
+.horizontal-scroll button,
+.horizontal-scroll a {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 5;
+}
+
+/* Disable click events on the card itself but allow content to be visible */
+.product-card {
+  pointer-events: none;
+}
+
+/* Ensure vertical scrolling works properly throughout the component */
+.touch-scroll-wrapper,
+.horizontal-scroll,
+.scroll-item,
+.product-card,
+.product-content {
+  overscroll-behavior-y: auto;
+  overflow-y: visible;
+}
+
+/* Prevent scroll blocking */
+.touch-scroll-wrapper * {
+  pointer-events: auto;
 }
