@@ -16,7 +16,8 @@ import {
   Shield,
   AlertTriangle
 } from 'lucide-react';
-import { useAdmin, User } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
+import type { User } from '@/contexts/AdminContext';
 // import { useWebsiteLoader } from '@/hooks/useWebsiteLoader';
 
 const UserManagement = () => {
@@ -185,7 +186,7 @@ const UserManagement = () => {
               <Filter className="w-4 h-4 text-charcoal/60" />
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as any)}
+                onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'blocked')}
                 className="px-3 py-2 border border-charcoal/20 rounded-lg focus:border-gold focus:ring-gold/20 bg-ivory"
               >
                 <option value="all">All Users</option>

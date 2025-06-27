@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminHeader from '@/components/admin/AdminHeader';
 import DashboardOverview from '@/components/admin/DashboardOverview';
 import ProductManagement from '@/components/admin/ProductManagement';
-import CategoryManagement from '@/components/admin/CategoryManagement';
 import UserManagement from '@/components/admin/UserManagement';
 import OrderManagement from '@/components/admin/OrderManagement';
 
 
-type AdminView = 'overview' | 'products' | 'categories' | 'users' | 'orders' | 'analytics';
+type AdminView = 'overview' | 'products' | 'users' | 'orders' | 'analytics';
 
 const AdminDashboard = () => {
   const { state } = useAdmin();
@@ -28,8 +27,6 @@ const AdminDashboard = () => {
         return <DashboardOverview />;
       case 'products':
         return <ProductManagement />;
-      case 'categories':
-        return <CategoryManagement />;
       case 'users':
         return <UserManagement />;
       case 'orders':

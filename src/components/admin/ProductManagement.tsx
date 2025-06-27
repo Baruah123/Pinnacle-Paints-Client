@@ -13,7 +13,7 @@ import {
   Package,
   Filter
 } from 'lucide-react';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import { useShop, Product } from '@/contexts/ShopContext';
 import ProductModal from './ProductModal';
 import BulkProductUpload from './BulkProductUpload';

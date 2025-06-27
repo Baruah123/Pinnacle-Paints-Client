@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import { Order } from '@/utils/orderUtils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Eye, EyeOff, Lock, User } from 'lucide-react';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 // import { useWebsiteLoader } from '@/hooks/useWebsiteLoader';
 
 const loginSchema = z.object({
@@ -146,10 +146,10 @@ const AdminLogin = () => {
           </Form>
 
           <div className="text-center text-sm text-charcoal/60">
-            <p>Demo Credentials:</p>
-            <p className="font-mono text-xs mt-1">
+            <p>Admin Credentials:</p>
+            <p className="font-mono text-xs mt-1 bg-gold/10 p-2 rounded">
               Email: admin@pinnaclepaints.com<br />
-              Password: admin123
+              Password: PinnacleAdmin2024!
             </p>
           </div>
           

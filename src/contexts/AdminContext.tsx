@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { Product } from './ShopContext';
 import { Order, getOrdersFromStorage, saveOrdersToStorage } from '@/utils/orderUtils';
+import { adminAuthAPI, AdminUser as AdminUserType } from '@/services/authAPI';
 
 // Admin Types
 export interface User {
@@ -15,19 +16,11 @@ export interface User {
   lastLogin?: string;
 }
 
-export interface AdminUser {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'super_admin';
-  permissions: string[];
-}
-
 
 
 export interface AdminState {
   isAuthenticated: boolean;
-  currentAdmin: AdminUser | null;
+  currentAdmin: AdminUserType | null;
   users: User[];
   products: Product[];
   orders: Order[];
@@ -35,14 +28,8 @@ export interface AdminState {
   error: string | null;
 }
 
-// Mock admin data
-const mockAdmin: AdminUser = {
-  id: 'admin-1',
-  email: 'admin@pinnaclepaints.com',
-  name: 'Admin User',
-  role: 'super_admin',
-  permissions: ['manage_products', 'manage_users', 'view_analytics', 'manage_orders']
-};
+// Re-export AdminUser type from API service
+export type { AdminUser } from '@/services/authAPI';
 
 // Mock users data
 const mockUsers: User[] = [
@@ -82,7 +69,7 @@ const mockUsers: User[] = [
 ];
 
 type AdminAction =
-  | { type: 'LOGIN_SUCCESS'; payload: AdminUser }
+  | { type: 'LOGIN_SUCCESS'; payload: AdminUserType }
   | { type: 'LOGIN_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
   | { type: 'SET_LOADING'; payload: boolean }
@@ -97,6 +84,9 @@ type AdminAction =
   | { type: 'UPDATE_ORDER_STATUS'; payload: { orderId: string; status: Order['status']; paymentStatus?: Order['paymentStatus']; notes?: string } }
   | { type: 'SET_ORDERS'; payload: Order[] }
   | { type: 'CLEAR_ERROR' };
+
+// Export types for context instance
+export type { AdminAction };
 
 const initialState: AdminState = {
   isAuthenticated: false,
@@ -235,16 +225,18 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
 
   // Check for existing admin session and load orders on mount
   useEffect(() => {
-    const savedAdmin = localStorage.getItem('admin-session');
-    if (savedAdmin) {
+    const checkAdminSession = async () => {
       try {
-        const adminData = JSON.parse(savedAdmin);
-        dispatch({ type: 'LOGIN_SUCCESS', payload: adminData });
+        const admin = await adminAuthAPI.getCurrentAdmin();
+        if (admin) {
+          dispatch({ type: 'LOGIN_SUCCESS', payload: admin });
+        }
       } catch (error) {
-        console.error('Failed to load admin session:', error);
-        localStorage.removeItem('admin-session');
+        console.error('Failed to restore admin session:', error);
       }
-    }
+    };
+
+    checkAdminSession();
 
     // Load orders from localStorage
     const loadOrders = () => {
@@ -266,22 +258,20 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     dispatch({ type: 'SET_LOADING', payload: true });
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock authentication - in real app, this would be an API call
-    if (email === 'admin@pinnaclepaints.com' && password === 'admin123') {
-      localStorage.setItem('admin-session', JSON.stringify(mockAdmin));
-      dispatch({ type: 'LOGIN_SUCCESS', payload: mockAdmin });
+    try {
+      const admin = await adminAuthAPI.login({ email, password });
+      localStorage.setItem('admin-session', JSON.stringify(admin));
+      dispatch({ type: 'LOGIN_SUCCESS', payload: admin });
       return true;
-    } else {
-      dispatch({ type: 'LOGIN_FAILURE', payload: 'Invalid credentials' });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Admin login failed';
+      dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
       return false;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('admin-session');
+    adminAuthAPI.logout();
     dispatch({ type: 'LOGOUT' });
   };
 
@@ -292,6 +282,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAdmin = () => {
   const context = useContext(AdminContext);
   if (!context) {

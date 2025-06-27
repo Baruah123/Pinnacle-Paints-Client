@@ -11,7 +11,7 @@ import {
   Eye,
   AlertTriangle
 } from 'lucide-react';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 
 const DashboardOverview = () => {
   const { state } = useAdmin();

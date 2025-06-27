@@ -14,7 +14,7 @@ import {
   Play,
   RotateCcw
 } from 'lucide-react';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import { Product, useShop } from '@/contexts/ShopContext';
 import { cloudinaryService, BulkUploadProgress as CloudinaryProgress } from '@/services/cloudinaryService';
 import BulkUploadMonitor from './BulkUploadMonitor';
@@ -222,8 +222,8 @@ Rustoleum Primer,All-surface primer that bonds without sanding,45.99,,Rustoleum,
             name: `gallery-${product.id}-${index}`,
             options: {
               folder: 'products/gallery',
-              quality: 'auto',
-              format: 'auto',
+              quality: 'auto' as const,
+              format: 'auto' as const,
               tags: ['bulk-upload', 'gallery', product.id || 'unknown']
             }
           }));
@@ -236,10 +236,12 @@ Rustoleum Primer,All-surface primer that bonds without sanding,45.99,,Rustoleum,
         const completeProduct: Product = {
           id: product.id!,
           name: product.name,
+          sku: product.sku || `SKU-${product.id}`,
           description: product.description,
           price: product.price,
           originalPrice: product.originalPrice,
           category: product.category || 'Decorative Paints',
+          brand: product.brand || 'Pinnacle Paints',
           finish: product.finish || '',
           coverage: product.coverage || '',
           features: product.features || [],

@@ -29,6 +29,7 @@ import FloorCoatings from "./pages/FloorCoatings";
 import SprayEquipment from "./pages/SprayEquipment";
 import CommercialResidential from "./pages/CommercialResidential";
 import { AdminProvider } from "@/contexts/AdminContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { CategoryProvider } from "@/contexts/CategoryContext";
 
 // Product Category Pages
@@ -65,12 +66,13 @@ const App = () => {
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CategoryProvider>
-      <ShopProvider>
-        <Toaster />
-        <Sonner />
-        <PerformanceMonitor />
-        <BrowserRouter>
+      <AuthProvider>
+        <CategoryProvider>
+        <ShopProvider>
+          <Toaster />
+          <Sonner />
+          <PerformanceMonitor />
+          <BrowserRouter>
           <Routes>            <Route path="/" element={<Index />} />
             <Route path="/story" element={<Story />} />
             <Route path="/collections" element={<Collections />} />
@@ -122,6 +124,7 @@ const App = () => {
         </BrowserRouter>
       </ShopProvider>
       </CategoryProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
   );

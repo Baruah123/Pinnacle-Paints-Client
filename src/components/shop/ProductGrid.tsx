@@ -3,7 +3,11 @@ import React, { useMemo } from 'react';
 import { useShop } from '@/contexts/ShopContext';
 import ProductCard from './ProductCard';
 
-const ProductGrid = () => {
+interface ProductGridProps {
+  viewMode?: 'grid' | 'list';
+}
+
+const ProductGrid: React.FC<ProductGridProps> = ({ viewMode = 'grid' }) => {
   const { state } = useShop();
   const filteredAndSortedProducts = useMemo(() => {
     const filtered = state.products.filter((product) => {
@@ -75,29 +79,44 @@ const ProductGrid = () => {
 
   if (filteredAndSortedProducts.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="text-6xl mb-4">🎨</div>
-        <h3 className="text-2xl font-playfair font-semibold text-charcoal mb-2">
+      <div className="text-center py-20">
+        <div className="text-8xl mb-6">🎨</div>
+        <h3 className="text-3xl font-bold text-gray-900 mb-4">
           No products found
         </h3>
-        <p className="text-graphene/80 max-w-md mx-auto">
+        <p className="text-gray-600 max-w-md mx-auto text-lg">
           Try adjusting your filters or search terms to find the perfect paint for your project.
         </p>
       </div>
     );
   }
 
+  const gridClasses = viewMode === 'list' 
+    ? "space-y-4" 
+    : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6";
+
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-medium text-charcoal">
-          {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'Product' : 'Products'}
-        </h2>
+    <div className="space-y-6">
+      {/* Results Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {filteredAndSortedProducts.length} {filteredAndSortedProducts.length === 1 ? 'Product' : 'Products'}
+          </h2>
+          <p className="text-gray-600 mt-1">
+            Discover premium paints and coatings
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+      {/* Products */}
+      <div className={gridClasses}>
         {filteredAndSortedProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            viewMode={viewMode}
+          />
         ))}
       </div>
     </div>

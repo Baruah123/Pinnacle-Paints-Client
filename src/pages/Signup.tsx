@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -14,7 +14,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Check, X } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Check, X, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Full name must be at least 2 characters." }),
@@ -31,7 +33,10 @@ const formSchema = z.object({
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const { state, register, clearError } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,6 +50,18 @@ const Signup = () => {
       acceptTerms: false,
     },
   });
+
+  // Clear error when component mounts
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (state.isAuthenticated) {
+      navigate('/shop');
+    }
+  }, [state.isAuthenticated, navigate]);
 
   const checkPasswordStrength = (password: string) => {
     let strength = 0;
@@ -72,9 +89,18 @@ const Signup = () => {
     return `${(strength / 5) * 100}%`;
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // Handle form submission here
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const success = await register({
+      fullName: values.fullName,
+      email: values.email,
+      phone: values.phone,
+      dateOfBirth: values.dateOfBirth,
+      password: values.password,
+    });
+    
+    if (success) {
+      navigate('/shop');
+    }
   };
 
   const handlePasswordChange = (value: string) => {
@@ -120,6 +146,14 @@ const Signup = () => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {state.error && (
+                <Alert className="border-red-200 bg-red-50">
+                  <AlertDescription className="text-red-700">
+                    {state.error}
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <FormField
                 control={form.control}
                 name="fullName"
@@ -131,6 +165,7 @@ const Signup = () => {
                         placeholder="Enter your full name"
                         className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                         {...field}
+                        disabled={state.isLoading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -150,6 +185,7 @@ const Signup = () => {
                         placeholder="Enter your email"
                         className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                         {...field}
+                        disabled={state.isLoading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -169,6 +205,7 @@ const Signup = () => {
                         placeholder="+1 (555) 123-4567"
                         className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                         {...field}
+                        disabled={state.isLoading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -187,6 +224,7 @@ const Signup = () => {
                         type="date"
                         className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                         {...field}
+                        disabled={state.isLoading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -208,6 +246,7 @@ const Signup = () => {
                           className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors pr-10"
                           {...field}
                           onChange={(e) => handlePasswordChange(e.target.value)}
+                          disabled={state.isLoading}
                         />
                         <button
                           type="button"
@@ -292,12 +331,23 @@ const Signup = () => {
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-charcoal">Confirm Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Confirm your password"
-                        className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Confirm your password"
+                          className="w-full px-4 py-3 border border-charcoal/20 rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors pr-10"
+                          disabled={state.isLoading}
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-charcoal/60 hover:text-charcoal"
+                          disabled={state.isLoading}
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -314,6 +364,7 @@ const Signup = () => {
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         className="border-charcoal/30 data-[state=checked]:bg-gold data-[state=checked]:border-gold"
+                        disabled={state.isLoading}
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
@@ -336,9 +387,13 @@ const Signup = () => {
               <Button
                 type="submit"
                 className="w-full bg-gold hover:bg-gold/90 text-charcoal font-medium py-3 text-lg shine-effect"
-                disabled={!form.formState.isValid}
+                disabled={!form.formState.isValid || state.isLoading}
               >
-                Create Account
+                {state.isLoading ? (
+                  <Loader2 className="animate-spin h-5 w-5 mr-3" />
+                ) : (
+                  "Create Account"
+                )}
               </Button>              <div className="text-center">
                 <p className="text-charcoal/60">
                   Already have an account?{' '}

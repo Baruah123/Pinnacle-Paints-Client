@@ -12,14 +12,14 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate } from 'react-router-dom';
 
 interface AdminSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
   currentView: string;
-  onViewChange: (view: 'overview' | 'products' | 'categories' | 'users' | 'orders' | 'analytics') => void;
+  onViewChange: (view: 'overview' | 'products' | 'users' | 'orders' | 'analytics') => void;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
@@ -43,12 +43,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       label: 'Products',
       icon: Package,
       description: 'Manage Products'
-    },
-    {
-      id: 'categories',
-      label: 'Categories',
-      icon: Grid3X3,
-      description: 'Featured Categories'
     },
     {
       id: 'users',
@@ -134,7 +128,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             return (
               <li key={item.id}>
                 <button
-                  onClick={() => onViewChange(item.id as any)}
+                  onClick={() => onViewChange(item.id as 'overview' | 'products' | 'users' | 'orders' | 'analytics')}
                   className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                     isActive 
                       ? 'bg-gold text-charcoal shadow-lg' 
