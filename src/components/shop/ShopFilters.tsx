@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,22 +94,23 @@ const ShopFilters = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       {/* Sort */}
-      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-charcoal font-playfair text-lg">Sort By</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10 shadow-sm hover:shadow transition-shadow duration-200">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-charcoal font-playfair text-xl tracking-tight">Sort By</CardTitle>
         </CardHeader>
-        <CardContent>          <Select
+        <CardContent className="pb-4 px-5">
+          <Select
             value={state.sorting}
             onValueChange={(value: 'price-low' | 'price-high' | 'newest' | 'popular' | 'rating') => dispatch({ type: 'SET_SORTING', payload: value })}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-white/70 border-graphene/15 focus:ring-gold/30 focus:border-gold/50">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/95">
               {sortOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem key={option.value} value={option.value} className="hover:bg-gold/10 focus:bg-gold/10">
                   {option.label}
                 </SelectItem>
               ))}
@@ -120,21 +120,21 @@ const ShopFilters = () => {
       </Card>
 
       {/* Category Filter */}
-      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-charcoal font-playfair text-lg">Category</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10 shadow-sm hover:shadow transition-shadow duration-200">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-charcoal font-playfair text-xl tracking-tight">Category</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-4 px-5">
           <Select
             value={state.filters.category || 'all'}
             onValueChange={handleCategoryChange}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-white/70 border-graphene/15 focus:ring-gold/30 focus:border-gold/50">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/95">
               {categories.map((category) => (
-                <SelectItem key={category.value} value={category.value}>
+                <SelectItem key={category.value} value={category.value} className="hover:bg-gold/10 focus:bg-gold/10">
                   {category.label}
                 </SelectItem>
               ))}
@@ -144,21 +144,21 @@ const ShopFilters = () => {
       </Card>
 
       {/* Brand Filter */}
-      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-charcoal font-playfair text-lg">Brand</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10 shadow-sm hover:shadow transition-shadow duration-200">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-charcoal font-playfair text-xl tracking-tight">Brand</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-4 px-5">
           <Select
             value={state.filters.brand || 'all'}
             onValueChange={handleBrandChange}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-white/70 border-graphene/15 focus:ring-gold/30 focus:border-gold/50">
               <SelectValue placeholder="All Brands" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/95">
               {brands.map((brand) => (
-                <SelectItem key={brand.value} value={brand.value}>
+                <SelectItem key={brand.value} value={brand.value} className="hover:bg-gold/10 focus:bg-gold/10">
                   {brand.label}
                 </SelectItem>
               ))}
@@ -168,21 +168,21 @@ const ShopFilters = () => {
       </Card>
 
       {/* Finish Filter */}
-      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-charcoal font-playfair text-lg">Finish</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10 shadow-sm hover:shadow transition-shadow duration-200">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-charcoal font-playfair text-xl tracking-tight">Finish</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-4 px-5">
           <Select
             value={state.filters.finish || 'all'}
             onValueChange={handleFinishChange}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-white/70 border-graphene/15 focus:ring-gold/30 focus:border-gold/50">
               <SelectValue placeholder="All Finishes" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/95">
               {finishes.map((finish) => (
-                <SelectItem key={finish.value} value={finish.value}>
+                <SelectItem key={finish.value} value={finish.value} className="hover:bg-gold/10 focus:bg-gold/10">
                   {finish.label}
                 </SelectItem>
               ))}
@@ -192,35 +192,38 @@ const ShopFilters = () => {
       </Card>
 
       {/* Price Range */}
-      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-charcoal font-playfair text-lg">Price Range</CardTitle>
+      <Card className="bg-white/80 backdrop-blur-sm border-graphene/10 shadow-sm hover:shadow transition-shadow duration-200">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-charcoal font-playfair text-xl tracking-tight">Price Range</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="pb-6 px-5">
+          <div className="space-y-6">
             <Slider
               value={state.filters.priceRange}
               onValueChange={handlePriceRangeChange}
               max={300}
               min={0}
               step={5}
-              className="w-full"
+              className="w-full mt-3"
             />
-            <div className="flex justify-between text-sm text-graphene">
-              <span>${state.filters.priceRange[0]}</span>
-              <span>${state.filters.priceRange[1]}</span>
+            <div className="flex justify-between items-center">
+              <div className="bg-white/70 px-3 py-1.5 rounded-md border border-graphene/15 text-sm font-medium text-graphene">
+                ${state.filters.priceRange[0]}
+              </div>
+              <div className="h-px w-12 bg-graphene/10"></div>
+              <div className="bg-white/70 px-3 py-1.5 rounded-md border border-graphene/15 text-sm font-medium text-graphene">
+                ${state.filters.priceRange[1]}
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-
-
       {/* Clear Filters */}
       <Button
         onClick={clearFilters}
         variant="outline"
-        className="w-full border-graphene/20 text-graphene hover:bg-gold/10 hover:border-gold/30"
+        className="w-full border border-graphene/20 text-graphene hover:bg-gold/10 hover:border-gold/30 font-medium text-sm tracking-wide py-6 transition-colors duration-200 rounded-md"
       >
         Clear All Filters
       </Button>

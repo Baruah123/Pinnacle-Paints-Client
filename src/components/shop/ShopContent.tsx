@@ -12,6 +12,21 @@ const ShopContent = () => {
   const { state, dispatch } = useShop();
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
+  // Ensure we're always in grid view on mobile
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && viewMode === 'list') {
+        setViewMode('grid');
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Initial check
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewMode]);
 
   const handleBackToCategories = () => {
     dispatch({ type: 'SET_VIEW_MODE', payload: 'categories' });
@@ -118,51 +133,51 @@ const ShopContent = () => {
   }).length;
 
   return (
-    <div className="py-12 space-y-8">
+    <div className="py-6 sm:py-8 md:py-10 lg:py-12 space-y-4 sm:space-y-6 md:space-y-8 px-3 sm:px-4 md:px-6 lg:px-8">
       {/* Ultra Modern Breadcrumb */}
-      <div className="flex items-center gap-3 text-sm">
+      <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm px-1 sm:px-0 mb-2 sm:mb-0 overflow-x-auto whitespace-nowrap">
         <button
           onClick={handleBackToCategories}
-          className="text-indigo-600 hover:text-indigo-800 font-semibold transition-all flex items-center gap-1 hover:gap-2"
+          className="text-indigo-600 hover:text-indigo-800 font-semibold transition-all flex items-center gap-1 hover:gap-2 py-1"
         >
-          ← Shop
+          <span className="text-xs sm:text-sm">←</span> Shop
         </button>
         <span className="text-gray-300">/</span>
-        <span className="text-gray-700 font-semibold">{getCurrentCategoryName()}</span>
+        <span className="text-gray-700 font-semibold truncate">{getCurrentCategoryName()}</span>
       </div>
 
       {/* Professional Products Header */}
-      <div className="bg-white rounded-lg p-8 shadow-lg border border-gray-200">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-          <div className="flex items-center gap-8">
+      <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-lg border border-gray-200">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 md:gap-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 md:gap-8 w-full">
             <Button
               onClick={handleBackToCategories}
               variant="outline"
-              className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 rounded-lg px-8 py-3 font-semibold transition-all duration-300 hover:shadow-lg"
+              className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 rounded-lg px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 font-semibold transition-all duration-300 hover:shadow-lg text-sm sm:text-base w-full sm:w-auto"
             >
-              <ArrowLeft className="w-5 h-5 mr-3" />
-              Back to Categories
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+              <span>Back to Categories</span>
             </Button>
             
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+            <div className="w-full sm:w-auto">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
                 {getCurrentCategoryName()}
               </h1>
-              <div className="flex items-center gap-4 mt-2">
-                <p className="text-gray-600">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-2">
+                <p className="text-gray-600 text-sm sm:text-base">
                   {state.searchQuery ? (
                     <>
-                      <span className="text-blue-600 font-bold text-lg">{filteredProductsCount}</span> results for 
+                      <span className="text-blue-600 font-bold text-base sm:text-lg">{filteredProductsCount}</span> results for 
                       <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded ml-2 font-medium">"{state.searchQuery}"</span>
                     </>
                   ) : (
                     <>
-                      <span className="text-blue-600 font-bold text-lg">{filteredProductsCount}</span> professional products available
+                      <span className="text-blue-600 font-bold text-base sm:text-lg">{filteredProductsCount}</span> professional products available
                     </>
                   )}
                 </p>
                 {filteredProductsCount > 0 && (
-                  <Badge className="bg-green-100 text-green-800 font-medium">
+                  <Badge className="bg-green-100 text-green-800 font-medium text-xs sm:text-sm whitespace-nowrap">
                     Ready to Ship
                   </Badge>
                 )}
@@ -171,45 +186,45 @@ const ShopContent = () => {
           </div>
 
           {/* Professional Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between sm:justify-end gap-3 mt-4 lg:mt-0 w-full sm:w-auto">
             <Button
               onClick={() => setShowFilters(!showFilters)}
               variant="outline"
-              className="lg:hidden border-2 border-gray-200 hover:border-gray-300 rounded-lg px-6 py-3 font-semibold transition-all duration-300"
+              className="lg:hidden border-2 border-gray-200 hover:border-gray-300 rounded-lg px-3 sm:px-4 md:px-6 py-2 md:py-3 font-medium sm:font-semibold transition-all duration-300 text-sm flex-1 sm:flex-none"
             >
-              <SlidersHorizontal className="w-5 h-5 mr-2" />
-              Filters
+              <SlidersHorizontal className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2 flex-shrink-0" />
+              <span>Filters</span>
               {(state.filters.category || state.filters.brand || state.filters.finish) && (
-                <Badge className="ml-2 bg-blue-100 text-blue-800">Active</Badge>
+                <Badge className="ml-1.5 sm:ml-2 bg-blue-100 text-blue-800 text-xs">Active</Badge>
               )}
             </Button>
             
-            <div className="flex items-center bg-gray-100 rounded-lg p-2 shadow-inner">
+            <div className="flex items-center bg-gray-100 rounded-lg p-1 sm:p-2 shadow-inner">
               <Button
                 onClick={() => setViewMode('grid')}
                 variant={viewMode === 'grid' ? 'default' : 'ghost'}
                 size="sm"
-                className={`rounded-lg px-4 py-2 transition-all duration-300 ${
+                className={`rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 ${
                   viewMode === 'grid' 
                     ? 'bg-white shadow-md text-blue-600 font-semibold' 
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                <Grid className="w-4 h-4 mr-2" />
-                Grid
+                <Grid className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Grid</span>
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'ghost'}
                 size="sm"
-                className={`rounded-lg px-4 py-2 transition-all duration-300 ${
+                className={`rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 hidden md:flex ${
                   viewMode === 'list' 
                     ? 'bg-white shadow-md text-blue-600 font-semibold' 
                     : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
-                <List className="w-4 h-4 mr-2" />
-                List
+                <List className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">List</span>
               </Button>
             </div>
           </div>
@@ -219,8 +234,21 @@ const ShopContent = () => {
       {/* Products Content with Ultra Modern Layout */}
       <div className="lg:grid lg:grid-cols-5 lg:gap-10">
         {/* Ultra Modern Filters Sidebar */}
-        <div className={`lg:col-span-1 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-1 mb-6 lg:mb-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
           <div className="sticky top-8">
+            {showFilters && (
+              <div className="flex justify-between items-center mb-4 lg:hidden px-2">
+                <h2 className="font-bold text-xl text-gray-800">Filters</h2>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowFilters(false)}
+                  className="text-gray-600 hover:text-gray-900 p-1.5"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+              </div>
+            )}
             <ShopFilters />
           </div>
         </div>
