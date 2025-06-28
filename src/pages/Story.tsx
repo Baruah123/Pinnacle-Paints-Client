@@ -122,49 +122,32 @@ const Story = () => {
       title: "The Genesis",
       description: "Born from a vision to revolutionize paint technology, Pinnacle Paints began as a small laboratory in Oslo, Norway. Our founder, Dr. Erik Andersen, discovered a unique way to extract pigments from Nordic soils.",
       icon: <Gem className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2000&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1547318604-c1a241384615?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEdsb2JhbCUyMEV4cGFuc2lvbiUyMHdhbGwlMjBwYWludGluZ3xlbnwwfHwwfHx8MA%3D%3D"
     },
     {
       year: "1985",
       title: "Global Expansion",
       description: "Our breakthrough in marine coatings technology led to rapid international growth. The world's most prestigious yacht manufacturers chose Pinnacle Paints for their flagship vessels.",
       icon: <Globe className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2000&auto=format&fit=crop"
+      image: "https://plus.unsplash.com/premium_photo-1693166014579-0f266bfa29f4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fEdsb2JhbCUyMEV4cGFuc2lvbiUyMHdhbGwlMjBwYWludGluZ3xlbnwwfHwwfHx8MA%3D%3D"
     },
     {
       year: "2010",
       title: "Sustainable Innovation",
       description: "Pioneered eco-friendly formulations without compromising on luxury or performance. We became the first paint company to achieve carbon neutrality in production.",
       icon: <Star className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1441974231531-c294fb7ac01b?q=80&w=2000&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1722446527017-dd3322844e10?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fEdsb2JhbCUyMEV4cGFuc2lvbiUyMHdhbGwlMjBwYWludGluZ3xlbnwwfHwwfHx8MA%3D%3D"
     },    {
       year: "2024",
       title: "Graphene Revolution",
       description: "Introduced graphene-enhanced paints, setting new standards for durability and elegance. Our paints now last 5x longer while maintaining their original luster.",
       icon: <Trophy className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1586810724476-c294fb7ac01b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fEltYWdlc3xlbnwwfHwwfHx8MA%3D%3D"
+      image: "https://images.unsplash.com/photo-1586266607655-df6f24280c50?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fEdsb2JhbCUyMEV4cGFuc2lvbiUyMHdhbGwlMjBwYWludGluZ3xlbnwwfHwwfHx8MA%3D%3D"
     }
   ];
 
-  const founders = [
-    {
-      name: "Dr. Erik Andersen",
-      role: "Founder & Chief Scientist",
-      story: "A visionary chemist who revolutionized paint technology by discovering how to harness the power of graphene.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
-    },    {
-      name: "Isabella Chen",
-      role: "Creative Director",
-      story: "Master colorist who travels the world seeking inspiration from nature's most beautiful phenomena.",
-      image: "https://plus.unsplash.com/premium_photo-1661515449711-ace459054f78?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TWFuJTIwaW1hZ2VzfGVufDB8fDB8fHww"
-    },
-    {
-      name: "Marcus Rodriguez",
-      role: "Head of Innovation",
-      story: "Former NASA engineer who brought aerospace-grade durability to luxury paint formulations.",
-      image: "https://images.unsplash.com/photos/1472099645785-5658abf4ff4e?q=80&w=1000&auto=format&fit=crop"
-    }
-  ];
+ 
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-charcoal via-charcoal to-graphene">
@@ -615,65 +598,7 @@ const Story = () => {
         </div>
       </section>
 
-      {/* Founders Section */}
-      <section className="py-24 px-6 bg-gradient-to-r from-forest to-charcoal">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            className="text-center mb-16"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={fadeInUp}
-            style={{ willChange: "transform, opacity" }}
-          >
-            <h2 className="font-playfair text-5xl md:text-6xl font-bold text-ivory mb-6">
-              The <span className="text-gold">Visionaries</span>
-            </h2>
-            <p className="text-xl text-ivory/80 max-w-3xl mx-auto">
-              Meet the extraordinary minds behind Pinnacle Paints' revolutionary approach to luxury finishes.
-            </p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {founders.map((founder, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={fadeInUp}
-                transition={{ delay: index * 0.1 }}
-                style={{ willChange: "transform, opacity" }}
-              >
-                <Card className="glassmorphism-btn bg-ivory/5 border-gold/20 backdrop-blur-lg hover:bg-ivory/10 hover:shadow-gold transition-all duration-500 group">
-                  <CardContent className="p-8 text-center">
-                    <motion.div 
-                      className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-gold/30 group-hover:border-gold/60 transition-colors"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                      style={{ willChange: "transform" }}
-                    >
-                      <img 
-                        src={founder.image} 
-                        alt={founder.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    </motion.div>
-                    <h3 className="font-playfair text-2xl font-bold text-ivory mb-2">
-                      {founder.name}
-                    </h3>
-                    <p className="text-gold font-medium mb-4">{founder.role}</p>
-                    <p className="text-ivory/80 leading-relaxed">
-                      {founder.story}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Values Section */}
       <section className="py-24 px-6 bg-gradient-to-r from-charcoal to-graphene">
