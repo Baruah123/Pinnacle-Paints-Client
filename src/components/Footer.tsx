@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Instagram, ChevronUp } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 interface FooterProps {
@@ -9,9 +9,6 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ hideConsultationButton = false }) => {
   const location = useLocation();
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <footer className="bg-charcoal text-ivory">
@@ -44,13 +41,14 @@ const Footer: React.FC<FooterProps> = ({ hideConsultationButton = false }) => {
           <div>
             <h3 className="font-playfair text-xl font-bold text-gold mb-6">Contact</h3>
             <ul className="space-y-3">
-              <li><a href="mailto:hello@graphenearte.com" className="text-ivory/80 hover:text-gold transition-colors">hello@graphenearte.com</a></li>
+              <li><a href="mailto:info@pinnaclecoatingsgroup.com" className="text-ivory/80 hover:text-gold transition-colors">info@pinnaclecoatingsgroup.com</a></li>
               <li><a href="#" className="text-ivory/80 hover:text-gold transition-colors">Store Locator</a></li>
               <li><a href="#" className="text-ivory/80 hover:text-gold transition-colors flex items-center space-x-2">
                 <Instagram size={18} className="hover:text-gold transition-colors" />
                 <span>Instagram</span>
               </a></li>
-              <li><a href="#" className="text-ivory/80 hover:text-gold transition-colors">+1 (555) 123-4567</a></li>
+              <li><a href="tel:+12146780080" className="text-ivory/80 hover:text-gold transition-colors">(214) 678-0080</a></li>
+              <li><address className="text-ivory/80 not-italic">616 W. Mockingbird Ln., Dallas, TX — 75247</address></li>
             </ul>
           </div>
         </div>
@@ -73,13 +71,7 @@ const Footer: React.FC<FooterProps> = ({ hideConsultationButton = false }) => {
               <Instagram size={20} />
             </a>
             
-            {/* Back to Top */}
-            <button
-              onClick={scrollToTop}
-              className="bg-gold/20 hover:bg-gold/30 p-2 rounded-full transition-all duration-300 hover:shadow-gold"
-            >
-              <ChevronUp size={20} className="text-gold" />
-            </button>
+            
           </div>
         </div>      </div>
 
