@@ -170,17 +170,24 @@ const Story = () => {
     <div className="min-h-screen bg-gradient-to-br from-charcoal via-charcoal to-graphene">
       <Navbar />
       
-      {/* Premium Hero Section with Professional Background Image */}
+      {/* Premium Hero Section with Video Background */}
       <section className="relative min-h-[90vh] flex items-center">
-        {/* Professional Background Image */}
+        {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
-          <div 
-            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-            style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2340&auto=format&fit=crop')",
-              backgroundPosition: "center 30%" 
-            }}
-          ></div>
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source 
+              src="https://res.cloudinary.com/dxs9msbqj/video/upload/v1750791419/2887457-hd_1920_1080_25fps_hmzvoi.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal/90" />
         </div>
 
